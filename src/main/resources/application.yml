@@ -1,0 +1,18 @@
+spring:
+  profiles:
+    default: local
+    group:
+      local:
+        - local
+        - common
+      dev:
+        - dev
+        - common
+      prod:
+        - prod
+        - common
+---
+spring:
+  config:
+    activate:
+      on-profile: common
