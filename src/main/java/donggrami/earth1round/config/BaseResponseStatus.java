@@ -1,4 +1,4 @@
-package donggrami.donggramiserver.config;
+package donggrami.earth1round.config;
 
 import lombok.Getter;
 
