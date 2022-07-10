@@ -13,12 +13,13 @@ import org.springframework.data.geo.Point; //Point
 
 
 @Entity
-@Table(name = "place")
+@Table(name = "Place")
 @Getter
 @Setter
+@DynamicInsert // default 처리를 위해
 public class Place {
-    public enum place_status{
-        active, inactive
+    public enum PlaceStatus{
+        ACTIVE, INACTIVE
     }
 
     @Id
@@ -30,22 +31,15 @@ public class Place {
     private String place_name;
 
     @Column(nullable = false) // build.gradle 파일에 의존성 추가
-    private Point location; //POINT(경도,위도) : latitude + longitude
+    private Point location; // POINT(경도,위도) : latitude + longitude
 
     @Enumerated(EnumType.STRING)
-    @ColumnDefault("active")
-    private place_status status;
+    @ColumnDefault("ACTIVE")
+    private PlaceStatus status;
 
     @Column(nullable = false)
     private Timestamp created_at;
 
     @Column(nullable = false)
     private Timestamp updated_at;
-
-    @OneToMany
-    @JoinColumn(name = "course_id")
-    private Course course;
-
-    // user 와의 관계 X
-    // character 와의 관계 X 
 }
