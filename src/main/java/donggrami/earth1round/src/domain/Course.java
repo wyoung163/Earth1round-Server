@@ -6,44 +6,53 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-
+import java.sql.Timestamp;
 @Entity
-@Getter @Setter
+@Table(name = "Course")
+@Getter
+@Setter
 @DynamicInsert
 public class Course {
+    public enum CourseStatus {
+        ACTIVE, INACTIVE, COMPLETE
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "course_id")
-    private Long id;
+    private Long course_id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "start_place_id")
     private Place start_place;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "end_place_id")
     private Place end_place;
 
     @Column(nullable = false)
     private double distance;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
-    private LocalDateTime start_date;
+    private Timestamp start_date;
 
-    private LocalDateTime end_date;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Timestamp end_date;
 
     @Enumerated(EnumType.STRING)
     @ColumnDefault("ACTIVE")
     private CourseStatus status;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
-    private LocalDateTime created_at;
+    private Timestamp created_at;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
-    private LocalDateTime updated_at;
+    private Timestamp updated_at;
 }
