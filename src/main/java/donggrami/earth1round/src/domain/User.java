@@ -1,4 +1,4 @@
-package donggrami.donggramiserver.src.domain;
+package donggrami.earth1round.src.domain;
 
 import lombok.Getter;
 import lombok.Setter;
