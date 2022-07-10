@@ -25,6 +25,8 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	// Spatial type
+	compile group: 'org.hibernate', name: 'hibernate-spatial', version: '5.4.4.Final'
 }
 
 tasks.named('test') {
