@@ -1,4 +1,4 @@
-package donggrami.earth1round.src.domain;
+package donggrami.earth1round.src.domain.entity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -37,22 +37,22 @@ public class Course {
     @Column(nullable = false)
     private double distance;
 
-    @Temporal(TemporalType.TIMESTAMP)
+//    @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
     private Timestamp start_date;
 
-    @Temporal(TemporalType.TIMESTAMP)
+//    @Temporal(TemporalType.TIMESTAMP)
     private Timestamp end_date;
 
     @Enumerated(EnumType.STRING)
     @ColumnDefault("ACTIVE")
     private CourseStatus status;
 
-    @Temporal(TemporalType.TIMESTAMP)
+//    @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
     private Timestamp created_at;
 
-    @Temporal(TemporalType.TIMESTAMP)
+//    @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
     private Timestamp updated_at;
 }

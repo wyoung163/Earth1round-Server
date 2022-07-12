@@ -17,6 +17,8 @@ public enum BaseResponseStatus {
      */
     REQUEST_ERROR(false, 2000, "입력값을 확인해주세요."),
 
+    // [POST] /users
+
     /**
      * 3000: Response 오류
      */

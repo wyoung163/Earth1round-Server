@@ -1,6 +1,8 @@
-package donggrami.earth1round.src.domain;
+package donggrami.earth1round.src.domain.entity;
 
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
@@ -9,10 +11,11 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "user")
+@Table(name = "User")
 @Getter
 @Setter
 @DynamicInsert
+@NoArgsConstructor
 public class User {
     public enum LoginType {
         KAKAO, GOOGLE, APPLE
@@ -36,17 +39,30 @@ public class User {
     private LoginType type;
 
     @Column(nullable = false)
+    @ColumnDefault("0")
     private int level;
 
     @Enumerated(EnumType.STRING)
     @ColumnDefault("ACTIVE")
     private UserStatus status;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false)
+//    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false, updatable = false, columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Timestamp created_at;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false)
+//    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false, columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private Timestamp updated_at;
+
+    @Builder
+    public User(Long user_id, String email, String nickname, LoginType type, int level, UserStatus status, Timestamp created_at, Timestamp updated_at) {
+        this.user_id = user_id;
+        this.email = email;
+        this.nickname = nickname;
+        this.type = type;
+        this.level = level;
+        this.status = status;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
+    }
 }
