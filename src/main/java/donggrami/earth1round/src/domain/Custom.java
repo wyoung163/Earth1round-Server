@@ -1,4 +1,4 @@
-package donggrami.earth1round.src.character;
+package donggrami.earth1round.src.domain;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Character {
+public class Custom {
     public enum CharacterStatus {
         ACTIVE, INACTIVE, COMPLETE
     }
