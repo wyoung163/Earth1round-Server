@@ -5,13 +5,14 @@ import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 
 @Repository
 @NoArgsConstructor
 public class Dao {
-    private Timestamp created_at = new Timestamp(new java.util.Date().getTime());
-    private Timestamp updated_at = new Timestamp(new java.util.Date().getTime());
+    private Timestamp created_at = new Timestamp(new Date().getTime());
+    private Timestamp updated_at = new Timestamp(new Date().getTime());
 
     public User toEntity(HashMap userInfo) {
         User userEntity = User.builder()

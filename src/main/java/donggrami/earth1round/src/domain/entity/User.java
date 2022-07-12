@@ -9,6 +9,7 @@ import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 
 @Entity
 @Table(name = "User")
@@ -46,13 +47,13 @@ public class User {
     @ColumnDefault("ACTIVE")
     private UserStatus status;
 
-//    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, updatable = false, columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private Timestamp created_at;
+    private Date created_at;
 
-//    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
-    private Timestamp updated_at;
+    private Date updated_at;
 
     @Builder
     public User(Long user_id, String email, String nickname, LoginType type, int level, UserStatus status, Timestamp created_at, Timestamp updated_at) {
