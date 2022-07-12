@@ -6,7 +6,6 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
@@ -47,7 +46,7 @@ public class Course {
     private Date end_date;
 
     @Enumerated(EnumType.STRING)
-    @ColumnDefault("ACTIVE")
+    @ColumnDefault("'ACTIVE'")
     private CourseStatus status;
 
     @Temporal(TemporalType.TIMESTAMP)
