@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 @Repository
 @NoArgsConstructor
-public class Dao {
+public class AuthDao {
     private Timestamp created_at = new Timestamp(new Date().getTime());
     private Timestamp updated_at = new Timestamp(new Date().getTime());
 

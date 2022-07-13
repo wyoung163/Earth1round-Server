@@ -6,7 +6,8 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.util.Date;
+
 @Entity
 @Table(name = "Course")
 @Getter
@@ -37,22 +38,22 @@ public class Course {
     @Column(nullable = false)
     private double distance;
 
-//    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
-    private Timestamp start_date;
+    private Date start_date;
 
-//    @Temporal(TemporalType.TIMESTAMP)
-    private Timestamp end_date;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date end_date;
 
     @Enumerated(EnumType.STRING)
     @ColumnDefault("ACTIVE")
     private CourseStatus status;
 
-//    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
-    private Timestamp created_at;
+    private Date created_at;
 
-//    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
-    private Timestamp updated_at;
+    private Date updated_at;
 }

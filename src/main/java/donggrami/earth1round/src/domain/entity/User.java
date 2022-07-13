@@ -40,7 +40,7 @@ public class User {
     private LoginType type;
 
     @Column(nullable = false)
-    @ColumnDefault("0")
+    @ColumnDefault("1")
     private int level;
 
     @Enumerated(EnumType.STRING)
@@ -48,11 +48,11 @@ public class User {
     private UserStatus status;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false, updatable = false, columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(nullable = false, updatable = false)
     private Date created_at;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false, columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    @Column(nullable = false)
     private Date updated_at;
 
     @Builder
