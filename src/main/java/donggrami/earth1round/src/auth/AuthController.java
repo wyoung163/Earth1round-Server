@@ -30,21 +30,12 @@ public class AuthController {
     @PostMapping("/re-issue")
     public BaseResponse<PostTokenRes> reIssueToken(@RequestBody PostTokenReq postTokenReq) {
         try {
-            if (postTokenReq.getUser_id() == null) {
-                return new BaseResponse<>(POST_EMPTY_USER_ID);
-            }
-
             if (postTokenReq.getRefresh_token() == null) {
                 return new BaseResponse<>(POST_EMPTY_REFRESH_TOKEN);
             }
 
             jwtService.isValidRefreshToken(postTokenReq.getRefresh_token());
             Long user_id = jwtService.getUserIdWithRefreshToken(postTokenReq.getRefresh_token());
-
-            if (!Objects.equals(user_id, postTokenReq.getUser_id())) {
-                return new BaseResponse<>(INVALID_USER);
-            }
-
             PostTokenRes postTokenRes = new PostTokenRes(jwtService.createAccessToken(user_id));
 
             return new BaseResponse<>(postTokenRes);

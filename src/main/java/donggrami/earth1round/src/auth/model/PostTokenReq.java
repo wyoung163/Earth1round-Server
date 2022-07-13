@@ -10,6 +10,5 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostTokenReq {
-    private Long user_id;
     private String refresh_token;
 }

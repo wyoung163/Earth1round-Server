@@ -21,9 +21,7 @@ public enum BaseResponseStatus {
     INVALID_ACCESS_TOKEN(false, 2003, "유효하지 않은 access token 입니다."),
     EXPIRED_REFRESH_TOKEN(false, 2004, "Refresh token이 만료되었습니다."),
     INVALID_REFRESH_TOKEN(false, 2005, "유효하지 않은 refresh token 입니다."),
-    POST_EMPTY_USER_ID(false, 2006, "사용자의 아이디 값을 입력해주세요."),
-    POST_EMPTY_REFRESH_TOKEN(false, 2007, "Refresh token을 입력해주세요."),
-    INVALID_USER(false, 2008, "현재 사용자와 토큰의 유효 사용자가 일치하지 않습니다."),
+    POST_EMPTY_REFRESH_TOKEN(false, 2006, "Refresh token을 입력해주세요."),
 
     /**
      * 3000: Response 오류
