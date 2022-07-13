@@ -1,7 +1,6 @@
-/*
 package donggrami.earth1round.utils.jwt;
 
-import donggrami.earth1round.config.BaseException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import donggrami.earth1round.config.BaseResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -27,16 +26,17 @@ public class JwtTokenInterceptor implements HandlerInterceptor {
         String accessToken = request.getHeader("ACCESS-TOKEN");
 
         if (accessToken == null || accessToken.length() == 0) {
+            ObjectMapper mapper = new ObjectMapper();
+            BaseResponse<Object> failed = new BaseResponse<>(EMPTY_JWT);
             response.setStatus(401);
-            response.setHeader("message", "Check the token.");
-            //throw new BaseException(EMPTY_JWT);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("utf-8");
+            response.getWriter().write(mapper.writeValueAsString(failed));
+
             return false;
         }
         jwtService.isValidAccessToken(accessToken);
-        Long userIdByJwt = jwtService.getUserId(accessToken);
-        request.setAttribute("userIdByJwt", userIdByJwt);
 
         return true;
     }
 }
-*/

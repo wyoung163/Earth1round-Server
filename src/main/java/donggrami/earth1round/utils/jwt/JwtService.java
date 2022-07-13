@@ -10,8 +10,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
-import static donggrami.earth1round.config.BaseResponseStatus.EXPIRED_JWT;
-import static donggrami.earth1round.config.BaseResponseStatus.INVALID_JWT;
+import static donggrami.earth1round.config.BaseResponseStatus.*;
 
 @Service
 public class JwtService {
@@ -58,9 +57,9 @@ public class JwtService {
             Claims claims = getClaims(jwt);
             return true;
         } catch (ExpiredJwtException e) {
-            throw new BaseException(EXPIRED_JWT);
+            throw new BaseException(EXPIRED_ACCESS_TOKEN);
         } catch (JwtException e) {
-            throw new BaseException(INVALID_JWT);
+            throw new BaseException(INVALID_ACCESS_TOKEN);
         }
     }
 
@@ -74,9 +73,9 @@ public class JwtService {
             Claims claims = getClaims(refreshToken);
             return true;
         } catch (ExpiredJwtException e) {
-            throw new BaseException(EXPIRED_JWT);
+            throw new BaseException(EXPIRED_REFRESH_TOKEN);
         } catch (JwtException e) {
-            throw new BaseException(INVALID_JWT);
+            throw new BaseException(INVALID_REFRESH_TOKEN);
         }
     }
 
@@ -91,7 +90,7 @@ public class JwtService {
     }
 
     /**
-     * JWT에서 user_id 추출
+     * Access token 에서 user_id 추출
      * @return Long
      */
     public Long getUserId() throws BaseException {
@@ -103,6 +102,11 @@ public class JwtService {
         return claims.get("user_id", Long.class);
     }
 
+    /**
+     * Refresh token 에서 user_id 추출
+     * (access token 재발행시에만 사용)
+     * @return Long
+     */
     public Long getUserIdWithRefreshToken(String refreshToken) {
         Claims claims = getClaims(refreshToken);
 

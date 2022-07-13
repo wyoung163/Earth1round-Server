@@ -2,17 +2,12 @@ package donggrami.earth1round.src.auth;
 
 import donggrami.earth1round.config.BaseException;
 import donggrami.earth1round.config.BaseResponse;
-import donggrami.earth1round.src.auth.model.LoginReq;
-import donggrami.earth1round.src.auth.model.LoginRes;
 import donggrami.earth1round.src.auth.model.PostTokenReq;
 import donggrami.earth1round.src.auth.model.PostTokenRes;
 import donggrami.earth1round.utils.jwt.JwtService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Objects;
 
 import static donggrami.earth1round.config.BaseResponseStatus.*;
