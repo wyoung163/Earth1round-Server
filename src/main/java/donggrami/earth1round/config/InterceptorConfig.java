@@ -1,4 +1,4 @@
-/*package donggrami.earth1round.config;
+package donggrami.earth1round.config;
 
 import donggrami.earth1round.utils.jwt.JwtTokenInterceptor;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +16,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtTokenInterceptor)
+                .excludePathPatterns("/login/kakao")
                 .excludePathPatterns("/re-issue");
     }
 }
-*/

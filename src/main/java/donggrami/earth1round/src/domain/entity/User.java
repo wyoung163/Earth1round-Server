@@ -44,7 +44,7 @@ public class User {
     private int level;
 
     @Enumerated(EnumType.STRING)
-    @ColumnDefault("ACTIVE")
+    @ColumnDefault("'ACTIVE'")
     private UserStatus status;
 
     @Temporal(TemporalType.TIMESTAMP)

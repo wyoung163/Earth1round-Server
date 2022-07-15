@@ -35,7 +35,7 @@ public class Place {
     private Point location; // POINT(경도,위도) : latitude + longitude
 
     @Enumerated(EnumType.STRING)
-    @ColumnDefault("ACTIVE")
+    @ColumnDefault("'ACTIVE'")
     private PlaceStatus status;
 
     @Column(nullable = false)
