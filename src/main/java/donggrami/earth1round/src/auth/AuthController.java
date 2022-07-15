@@ -27,7 +27,7 @@ import static donggrami.earth1round.config.BaseResponseStatus.POST_EMPTY_REFRESH
 @RequiredArgsConstructor
 public class AuthController {
     private final String KAKAO_CLIENT_ID = Secret.KAKAO_CLIENT_ID;
-    private final String KAKAO_REDIRECT_URI = "http://localhost:8080/login/kakao";
+    private final String KAKAO_REDIRECT_URI = Secret.KAKAO_REDIRECT_URI;
 
     @Autowired
     private final AuthService service;
