@@ -23,6 +23,8 @@ public enum BaseResponseStatus {
     INVALID_REFRESH_TOKEN(false, 2005, "유효하지 않은 refresh token 입니다."),
     POST_EMPTY_REFRESH_TOKEN(false, 2006, "Refresh token을 입력해주세요."),
 
+    // [POST] /users
+
     /**
      * 3000: Response 오류
      */

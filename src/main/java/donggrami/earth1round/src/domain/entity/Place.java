@@ -1,4 +1,4 @@
-package donggrami.earth1round.src.domain;
+package donggrami.earth1round.src.domain.entity;
 
 import org.hibernate.annotations.*;
 import lombok.Getter;
