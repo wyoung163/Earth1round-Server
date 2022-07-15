@@ -1,0 +1,22 @@
+spring:
+  profiles:
+    default: local
+    group:
+      local:
+        - local
+        - common
+      dev:
+        - dev
+        - common
+      prod:
+        - prod
+        - common
+---
+spring:
+  config:
+    activate:
+      on-profile: common
+  # property 수정
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.spatial.dialect.mysql.MySQL56InnoDBSpatialDialect
