@@ -40,8 +40,12 @@ public class User {
     private LoginType type;
 
     @Column(nullable = false)
-    @ColumnDefault("1")
     private int level;
+
+    @PrePersist
+    public void prePersist(){
+        this.level = this.level == 0 ? 1 : this.level;
+    }
 
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'ACTIVE'")
