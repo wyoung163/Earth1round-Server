@@ -30,22 +30,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long user_id;
 
-    @Column(length = 50, nullable = false)
-    private String email;
-
-    @Column(length = 30, nullable = false)
-    private String nickname;
+    @Column(name = "personal_id")
+    private Long personalId;
 
     @Enumerated(EnumType.STRING)
     private LoginType type;
-
-    @Column(nullable = false)
-    private int level;
-
-    @PrePersist
-    public void prePersist(){
-        this.level = this.level == 0 ? 1 : this.level;
-    }
 
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'ACTIVE'")
@@ -60,12 +49,10 @@ public class User {
     private Date updated_at;
 
     @Builder
-    public User(Long user_id, String email, String nickname, LoginType type, int level, UserStatus status, Timestamp created_at, Timestamp updated_at) {
+    public User(Long user_id, Long personalId, LoginType type, UserStatus status, Timestamp created_at, Timestamp updated_at) {
         this.user_id = user_id;
-        this.email = email;
-        this.nickname = nickname;
+        this.personalId = personalId;
         this.type = type;
-        this.level = level;
         this.status = status;
         this.created_at = created_at;
         this.updated_at = updated_at;

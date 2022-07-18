@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -25,12 +24,12 @@ import static donggrami.earth1round.config.BaseResponseStatus.POST_EMPTY_REFRESH
 
 @RestController
 @RequiredArgsConstructor
-public class AuthController {
+public class KakaoAuthController {
     private final String KAKAO_CLIENT_ID = Secret.KAKAO_CLIENT_ID;
     private final String KAKAO_REDIRECT_URI = Secret.KAKAO_REDIRECT_URI;
 
     @Autowired
-    private final AuthService service;
+    private final KakaoAuthService service;
 
     @Autowired
     private final JwtService jwtService;
@@ -63,7 +62,7 @@ public class AuthController {
 //        System.out.println("accessToken : " + access_Token);
 
         HashMap<String, Object> userInfo = getKakaoUserInfo(access_Token);
-//        System.out.println(userInfo);
+        System.out.println(userInfo);
 //        System.out.println("email : " + userInfo.get("email"));
 //        System.out.println("nickname : " + userInfo.get("nickname"));
 
@@ -154,20 +153,23 @@ public class AuthController {
             while ((line = br.readLine()) != null) {
                 result += line;
             }
-//            System.out.println("response body : " + result);
+            System.out.println("response body : " + result);
 
             JsonParser parser = new JsonParser();
             JsonElement element = parser.parse(result);
 
             JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
-            JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
+//            JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
 
+            Long personalId = element.getAsJsonObject().get("id").getAsLong();
             String nickname = properties.getAsJsonObject().get("nickname").getAsString();
-            String email = kakao_account.getAsJsonObject().get("email").getAsString();
+            String profileImage = properties.getAsJsonObject().get("profile_image").getAsString();
 
             userInfo.put("accessToken", access_Token);
+            userInfo.put("personalId", personalId);
             userInfo.put("nickname", nickname);
-            userInfo.put("email", email);
+            userInfo.put("profileImage", profileImage);
+
 
         } catch (IOException e) {
             e.printStackTrace();
