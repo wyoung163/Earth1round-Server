@@ -1,4 +1,4 @@
-package donggrami.earth1round.src.domain;
+package donggrami.earth1round.src.domain.entity;
 
 import org.hibernate.annotations.*;
 import lombok.Getter;
@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import org.springframework.data.geo.Point; //Point
 
@@ -38,8 +39,8 @@ public class Place {
     private PlaceStatus status;
 
     @Column(nullable = false)
-    private Timestamp created_at;
+    private Date created_at;
 
     @Column(nullable = false)
-    private Timestamp updated_at;
+    private Date updated_at;
 }
