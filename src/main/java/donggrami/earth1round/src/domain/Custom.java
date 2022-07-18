@@ -1,4 +1,4 @@
-package donggrami.earth1round.src.character;
+package donggrami.earth1round.src.domain;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -12,25 +12,25 @@ import java.sql.Timestamp;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Character {
-    public enum CharacterStatus {
+public class Custom {
+    public enum CustomStatus {
         ACTIVE, INACTIVE, COMPLETE
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long character_id;
+    private Long custom_id;
 
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 
     @ColumnDefault("0")
-    private int character_num;
+    private int custom_num;
 
     @Enumerated(EnumType.STRING)
     @ColumnDefault("ACTIVE")
-    private CharacterStatus status;
+    private CustomStatus status;
 
     @Temporal(value = TemporalType.TIMESTAMP)
     @Column(nullable = false)
