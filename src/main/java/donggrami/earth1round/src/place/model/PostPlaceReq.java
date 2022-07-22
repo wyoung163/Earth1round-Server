@@ -1,14 +1,15 @@
 package donggrami.earth1round.src.place.model;
 
-import lombok.*;
-import org.springframework.data.geo.Point;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetPlacesRes {
-    private Long place_id;
+public class PostPlaceReq {
     private String place_name;
     private Double latitude;
     private Double longitude;

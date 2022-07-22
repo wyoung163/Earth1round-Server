@@ -24,17 +24,18 @@ public class PlaceService {
 
     public List<GetPlacesRes> retrievePlaces() throws BaseException {
         try{
-            return placeRepository.findPlaceByStatus();
+            return placeRepository.findPlaces();
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
     }
 
-//    public PostPlaceRes createPlace(PostPlaceReq postPlaceReq) throws BaseException {
-//        try{
-//            placeRepository.save(placeDao.toEntity);
-//        } catch (Exception exception) {
-//            throw new BaseException(DATABASE_ERROR);
-//        }
-//    }
+    public PostPlaceRes createPlace(PostPlaceReq postPlaceReq) throws BaseException {
+        try{
+            Long place_id = placeRepository.save(placeDao.toEntity(postPlaceReq)).getPlace_id();
+            return new PostPlaceRes(place_id);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

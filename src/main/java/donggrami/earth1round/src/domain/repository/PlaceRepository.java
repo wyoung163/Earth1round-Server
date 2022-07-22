@@ -12,9 +12,8 @@ import java.util.List;
 public interface PlaceRepository extends JpaRepository<Place, Long> {
 //    @Query(value = "select p.place_id as place_id, p.place_name as place_name, p.location as location " +
 //            "from Place p where p.status = 'ACTIVE'")
-    @Query(value = "select new donggrami.earth1round.src.place.model.GetPlacesRes(p.place_id, p.place_name, p.location)" +
-            " from Place p where p.status = 'ACTIVE'")
-    List<GetPlacesRes> findPlaceByStatus();
-
+    @Query(value = "select new donggrami.earth1round.src.place.model.GetPlacesRes(p.place_id, p.place_name," +
+            " p.latitude, p.longitude) from Place p where p.status = 'ACTIVE'")
+    List<GetPlacesRes> findPlaces();
 
 }

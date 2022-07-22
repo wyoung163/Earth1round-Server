@@ -34,10 +34,10 @@ public class Place {
 //    private Point location; // POINT(경도,위도) : latitude + longitude
 
     @Column(nullable = false)
-    private double latitude;
+    private Double latitude;
 
     @Column(nullable = false)
-    private double longitude;
+    private Double longitude;
 
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'ACTIVE'")
@@ -52,7 +52,7 @@ public class Place {
     private Date updated_at;
 
     @Builder
-    public Place(Long place_id, String place_name, double latitude, double longitude,
+    public Place(Long place_id, String place_name, Double latitude, Double longitude,
                  PlaceStatus status, Date created_at, Date updated_at) {
         this.place_id = place_id;
         this.place_name = place_name;

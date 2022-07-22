@@ -10,8 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
-import static donggrami.earth1round.config.BaseResponseStatus.POST_PLACE_EMPTY_PLACE_NAME;
+import static donggrami.earth1round.config.BaseResponseStatus.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,18 +31,23 @@ public class PlaceController {
         }
     }
 
-//    @ResponseBody
-//    @PostMapping("")
-//    public BaseResponse<PostPlaceRes> createPlace(@RequestBody PostPlaceReq postPlaceReq) {
-//        try {
-//            if(postPlaceReq.getPlace_name().length() == 0) {
-//                return new BaseResponse<>(POST_PLACE_EMPTY_PLACE_NAME);
-//            }
-////            if("".equals(postPlaceReq.getLatitude()) || )
-//            PostPlaceRes postPlaceRes = placeService.createPlace(postPlaceReq);
-//            return new BaseResponse<>(postPlaceRes);
-//        } catch (BaseException exception) {
-//            return new BaseResponse<>(exception.getStatus());
-//        }
-//    }
+    @ResponseBody
+    @PostMapping("/dev")
+    public BaseResponse<PostPlaceRes> createPlace(@RequestBody PostPlaceReq postPlaceReq) {
+        try {
+            if(postPlaceReq.getPlace_name().length() == 0) {
+                return new BaseResponse<>(POST_PLACE_EMPTY_PLACE_NAME);
+            }
+            if(postPlaceReq.getLatitude() == null) {
+                return new BaseResponse<>(POST_PLACE_EMPTY_LATITUDE);
+            }
+            if(postPlaceReq.getLongitude() == null) {
+                return new BaseResponse<>(POST_PLACE_EMPTY_LONGITUDE);
+            }
+            PostPlaceRes postPlaceRes = placeService.createPlace(postPlaceReq);
+            return new BaseResponse<>(postPlaceRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
 }
