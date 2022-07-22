@@ -1,9 +1,6 @@
 package donggrami.earth1round.src.place.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.geo.Point;
 
 @Getter
@@ -13,5 +10,6 @@ import org.springframework.data.geo.Point;
 public class GetPlacesRes {
     private Long place_id;
     private String place_name;
-    private Point location;
+    private double latitude;
+    private double longitude;
 }
