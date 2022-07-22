@@ -4,8 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import donggrami.earth1round.config.secret.Secret;
-import donggrami.earth1round.src.google.model.GoogleUser;
 import donggrami.earth1round.src.google.model.OAuthToken;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -14,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.HashMap;
 
 @Service
 public class OAuthService {
@@ -70,13 +75,31 @@ public class OAuthService {
         return restTemplate.exchange(url, HttpMethod.GET, request, String.class);
     }
 
-    public GoogleUser getUserInfo(ResponseEntity<String> userInfoResponse) {
-        GoogleUser googleUser = null;
-        try {
-            googleUser = objectMapper.readValue(userInfoResponse.getBody(), GoogleUser.class);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+    public HashMap<String, Object> getUserInfo(ResponseEntity<String> userInfoResponse) throws ParseException {
+        HashMap<String, Object> userInfo = new HashMap<String, Object>();
+
+        JSONParser jsonParser = new JSONParser();
+        JSONObject jsonObject = (JSONObject) jsonParser.parse(userInfoResponse.getBody());
+        JSONArray detail = (JSONArray) jsonObject.get("data");
+
+        if (jsonObject.get("code").equals("4000")) {
+            JSONObject result = (JSONObject) detail.get(0);
+            JSONObject support = (JSONObject) ((JSONArray)result.get("support")).get(0);
+
+            userInfo.put("personal_id", support.get("sub"));
+            userInfo.put("name", support.get("given_name"));
         }
-        return googleUser;
+
+//        String restCall = userInfoResponse.getBody();
+//        JSONObject jsonObject = new JSONObject(userInfoResponse);
+//        Long sub = Long.parseLong(jsonObject.getString("sub"));
+//        String name = jsonObject.getString("given_name"); //or name
+//
+//        userInfo.put("personal_id", sub);
+//        userInfo.put("name", name);
+
+        //user = objectMapper.readValue(userInfoResponse.getBody(), User.class);
+
+        return userInfo;
     }
 }

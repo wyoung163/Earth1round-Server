@@ -13,6 +13,7 @@ import java.util.Date;
 
 @Getter
 @Entity
+@Table(name = "Custom")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Custom {
     public enum CustomStatus {

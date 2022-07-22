@@ -3,8 +3,10 @@ package donggrami.earth1round.src.google;
 import donggrami.earth1round.src.domain.entity.User;
 import donggrami.earth1round.src.domain.repository.UserRepository;
 import donggrami.earth1round.src.google.model.GoogleUser;
+import donggrami.earth1round.src.google.model.GoogleUserRes;
 import donggrami.earth1round.src.google.model.OAuthToken;
 import donggrami.earth1round.utils.jwt.JwtService;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashMap;
 
 @Service
 public class UserService {
@@ -28,35 +31,39 @@ public class UserService {
         this.jwtService = jwtService;
     }
 
-    public String oauthLogin(String code) {
+    public GoogleUserRes oauthLogin(String code) throws ParseException {
         ResponseEntity<String> accessTokenResponse = oauthService.createPostRequest(code);
         OAuthToken oAuthToken = oauthService.getAccessToken(accessTokenResponse);
         logger.info("Access Token: {}", oAuthToken.getAccessToken());
 
         ResponseEntity<String> userInfoResponse = oauthService.createGetRequest(oAuthToken);
-        GoogleUser googleUser = oauthService.getUserInfo(userInfoResponse);
-        logger.info("Google User Name: {}", googleUser.getName());
+        HashMap userInfo = oauthService.getUserInfo(userInfoResponse);
+        logger.info("Google User Name: {}", userInfo.get("personal_id").toString());
 
-        if (isJoinedUser(googleUser)==null) {
-            signUp(googleUser);
+
+        if(isJoinedUser(userInfo) == null){
+            signUp(userInfo);
         }
-        User user = userRepository.getByEmail(googleUser.getEmail());
-        return jwtService.createAccessToken(user.getUser_id());
+
+        User user = userRepository.getByPersonalId(Long.parseLong(userInfo.get("personal_id").toString()));
+        String access_token = jwtService.createAccessToken(user.getUser_id());
+        String refresh_token = jwtService.createRefreshToken(user.getUser_id());
+        return new GoogleUserRes(access_token, refresh_token, user.getUser_id());
     }
 
-    private User isJoinedUser(GoogleUser googleUser) {
-        User users = userRepository.getByEmail(googleUser.getEmail());
+    private User isJoinedUser(HashMap<String, Object> userInfo) {
+        User users = userRepository.getByPersonalId(Long.parseLong(userInfo.get("personal_id").toString()));
         logger.info("Joined User: {}", users);
         return users;
     }
 
-    private void signUp(GoogleUser googleUser) {
+    private void signUp(HashMap<String, Object> userInfo) {
         Timestamp created_at = new Timestamp(new Date().getTime());
         Timestamp updated_at = new Timestamp(new Date().getTime());
 
         User userEntity = User.builder()
-                .email(googleUser.getEmail())
-                .nickname(googleUser.getName())
+                .personalId(Long.parseLong(userInfo.get("personal_id").toString()))
+                .nickname(userInfo.get("name").toString())
                 .type(User.LoginType.GOOGLE)
                 .created_at(created_at)
                 .updated_at(updated_at)

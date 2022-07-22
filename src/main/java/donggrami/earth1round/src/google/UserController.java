@@ -1,7 +1,10 @@
 package donggrami.earth1round.src.google;
 
+import donggrami.earth1round.config.BaseResponse;
+import donggrami.earth1round.src.google.model.GoogleUserRes;
 import donggrami.earth1round.src.google.model.TokenResponse;
 import donggrami.earth1round.utils.jwt.JwtService;
+import org.json.simple.parser.ParseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,18 +21,9 @@ public class UserController {
     }
 
     @GetMapping("/login/google")
-    public ResponseEntity<TokenResponse> oauthLogin(String code) {
-        String token = userService.oauthLogin(code);
-        return new ResponseEntity(new TokenResponse(token, "bearer"), HttpStatus.OK);
-    }
-
-    @GetMapping("/refresh/google")
-    public ResponseEntity<TokenResponse> refreshToken (@RequestBody String refreshToken) {
-
-        Long ID = jwtService.getUserIdWithRefreshToken(refreshToken);
-        String token = jwtService.createRefreshToken(ID);
-
-        return new ResponseEntity(new TokenResponse(token, "bearer"), HttpStatus.OK);
+    public BaseResponse<GoogleUserRes> oauthLogin(@RequestParam String code) throws ParseException {
+        GoogleUserRes googleUserRes = userService.oauthLogin(code);
+        return new BaseResponse<>(googleUserRes);
     }
 
 }

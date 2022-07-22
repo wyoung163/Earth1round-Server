@@ -33,6 +33,9 @@ public class User {
     @Column(length = 50, nullable = false)
     private String email;
 
+    @Column(name = "personal_id")
+    private Long personalId;
+
     @Column(length = 30, nullable = false)
     private String nickname;
 
@@ -56,9 +59,9 @@ public class User {
     private Date updated_at;
 
     @Builder
-    public User(Long user_id, String email, String nickname, LoginType type, int level, UserStatus status, Timestamp created_at, Timestamp updated_at) {
+    public User(Long user_id, Long personalId, String nickname, LoginType type, int level, UserStatus status, Timestamp created_at, Timestamp updated_at) {
         this.user_id = user_id;
-        this.email = email;
+        this.personalId = personalId;
         this.nickname = nickname;
         this.type = type;
         this.level = level;
