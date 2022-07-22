@@ -35,7 +35,7 @@ public class PlaceController {
     @PostMapping("/dev")
     public BaseResponse<PostPlaceRes> createPlace(@RequestBody PostPlaceReq postPlaceReq) {
         try {
-            if(postPlaceReq.getPlace_name().length() == 0) {
+            if(postPlaceReq.getPlace_name() == null) {
                 return new BaseResponse<>(POST_PLACE_EMPTY_PLACE_NAME);
             }
             if(postPlaceReq.getLatitude() == null) {
