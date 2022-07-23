@@ -2,7 +2,6 @@ package donggrami.earth1round.src.google;
 
 import donggrami.earth1round.src.domain.entity.User;
 import donggrami.earth1round.src.domain.repository.UserRepository;
-import donggrami.earth1round.src.google.model.GoogleUser;
 import donggrami.earth1round.src.google.model.GoogleUserRes;
 import donggrami.earth1round.src.google.model.OAuthToken;
 import donggrami.earth1round.utils.jwt.JwtService;

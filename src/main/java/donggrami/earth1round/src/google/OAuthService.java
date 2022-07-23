@@ -9,6 +9,10 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -16,11 +20,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 
 @Service
+@Configuration
 public class OAuthService {
 
     private final ObjectMapper objectMapper;
@@ -31,9 +37,9 @@ public class OAuthService {
     private static final String REDIRECT_URI = Secret.GOOGLE_REDIRECT;
     private static final String GRANT_TYPE = "authorization_code";
 
-    public OAuthService(RestTemplate restTemplate) {
+    public OAuthService(RestTemplateBuilder restTemplate) {
         this.objectMapper = new ObjectMapper().setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
-        this.restTemplate = restTemplate;
+        this.restTemplate = restTemplate.build();
     }
 
     public ResponseEntity<String> createPostRequest(String code) {

@@ -21,7 +21,7 @@ public class UserController {
     }
 
     @GetMapping("/login/google")
-    public BaseResponse<GoogleUserRes> oauthLogin(@RequestParam String code) throws ParseException {
+    public BaseResponse<GoogleUserRes> oauthLogin(@RequestParam(value = "code",required=false,defaultValue="") String code) throws ParseException {
         GoogleUserRes googleUserRes = userService.oauthLogin(code);
         return new BaseResponse<>(googleUserRes);
     }

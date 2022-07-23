@@ -46,7 +46,7 @@ public class Course {
     private Date end_date;
 
     @Enumerated(EnumType.STRING)
-    @ColumnDefault("ACTIVE")
+    @ColumnDefault("'ACTIVE'")
     private CourseStatus status;
 
     @Temporal(TemporalType.TIMESTAMP)
