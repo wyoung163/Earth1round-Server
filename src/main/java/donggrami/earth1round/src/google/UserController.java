@@ -25,5 +25,4 @@ public class UserController {
         GoogleUserRes googleUserRes = userService.oauthLogin(code);
         return new BaseResponse<>(googleUserRes);
     }
-
 }

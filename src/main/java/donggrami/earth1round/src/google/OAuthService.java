@@ -5,10 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import donggrami.earth1round.config.secret.Secret;
 import donggrami.earth1round.src.google.model.OAuthToken;
+import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
@@ -23,11 +26,15 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 @Service
 @Configuration
+@RequiredArgsConstructor
 public class OAuthService {
+    private Logger logger = LoggerFactory.getLogger(UserService.class);
 
     private final ObjectMapper objectMapper;
     private final RestTemplate restTemplate;
@@ -56,8 +63,10 @@ public class OAuthService {
         headers.add("Content-Type", "application/x-www-form-urlencoded");
 
         HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(params, headers);
+        ResponseEntity<String> result = restTemplate.exchange(URLDecoder.decode(url, StandardCharsets.UTF_8), HttpMethod.POST, httpEntity, String.class);
+        logger.warn(result.toString());
 
-        return restTemplate.exchange(url, HttpMethod.POST, httpEntity, String.class);
+        return result;
     }
 
     public OAuthToken getAccessToken(ResponseEntity<String> response) {
@@ -77,6 +86,7 @@ public class OAuthService {
         headers.add("Authorization", "Bearer " + oAuthToken.getAccessToken());
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity(headers);
+        logger.warn(request.toString());
 
         return restTemplate.exchange(url, HttpMethod.GET, request, String.class);
     }
