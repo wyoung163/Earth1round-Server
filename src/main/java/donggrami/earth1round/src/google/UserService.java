@@ -1,73 +1,145 @@
 package donggrami.earth1round.src.google;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import donggrami.earth1round.config.secret.Secret;
 import donggrami.earth1round.src.domain.entity.User;
 import donggrami.earth1round.src.domain.repository.UserRepository;
 import donggrami.earth1round.src.google.model.GoogleUserRes;
 import donggrami.earth1round.src.google.model.OAuthToken;
+import donggrami.earth1round.src.google.model.TokenResponse;
 import donggrami.earth1round.utils.jwt.JwtService;
-import lombok.RequiredArgsConstructor;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 @Service
-@RequiredArgsConstructor
+@Configuration
 public class UserService {
     private Logger logger = LoggerFactory.getLogger(UserService.class);
 
+    private static final String CLIENT_ID = Secret.GOOGLE_CLIENT_ID;
+    private static final String CLIENT_SECRET = Secret.GOOGLE_CLIENT_SECRET;
+    private static final String REDIRECT_URI = Secret.GOOGLE_REDIRECT;
+    private static final String GRANT_TYPE = "authorization_code";
+
     private final UserRepository userRepository;
-    private final OAuthService oauthService;
     private final UserDao userDao;
     private final JwtService jwtService;
+    private final ObjectMapper objectMapper;
+    private final RestTemplate restTemplate;
 
-//    public UserService(UserRepository userRepository, OAuthService oauthService, JwtService jwtService) {
-//        this.userRepository = userRepository;
-//        this.oauthService = oauthService;
-//        this.jwtService = jwtService;
-//    }
+    public UserService(UserRepository userRepository, UserDao userDao, JwtService jwtService, RestTemplateBuilder restTemplate) {
+        this.userRepository = userRepository;
+        this.userDao = userDao;
+        this.jwtService = jwtService;
+        this.objectMapper = new ObjectMapper().setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+        this.restTemplate = restTemplate.build();
+    }
 
     public GoogleUserRes oauthLogin(String code) throws ParseException {
-        ResponseEntity<String> accessTokenResponse = oauthService.createPostRequest(code);
-        OAuthToken oAuthToken = oauthService.getAccessToken(accessTokenResponse);
+        ResponseEntity<String> accessTokenResponse = createPostRequest(code);
+        OAuthToken oAuthToken = getAccessToken(accessTokenResponse);
         logger.info("Access Token: {}", oAuthToken.getAccessToken());
 
-        ResponseEntity<String> userInfoResponse = oauthService.createGetRequest(oAuthToken);
-        HashMap<String, Object> userInfo = oauthService.getUserInfo(userInfoResponse);
+        ResponseEntity<String> userInfoResponse = createGetRequest(oAuthToken);
+        HashMap<String, Object> userInfo = getUserInfo(userInfoResponse);
         logger.info("Google User Name: {}", userInfo.get("personal_id").toString());
 
-        if(isJoinedUser(userInfo) == null){
+        if (isJoinedUser(userInfo) == null) {
             userRepository.save(userDao.signUp(userInfo));
         }
 
-        User user = userRepository.getByPersonalId(Long.parseLong(userInfo.get("personal_id").toString()));
+        User user = userRepository.getByPersonalId(new BigDecimal(userInfo.get("personal_id").toString()).setScale(0, RoundingMode.FLOOR).longValue());
         String access_token = jwtService.createAccessToken(user.getUser_id());
         String refresh_token = jwtService.createRefreshToken(user.getUser_id());
         return new GoogleUserRes(access_token, refresh_token, user.getUser_id());
     }
 
     private User isJoinedUser(HashMap<String, Object> userInfo) {
-        User users = userRepository.getByPersonalId(Long.parseLong(userInfo.get("personal_id").toString()));
+        User users = userRepository.getByPersonalId(new BigDecimal(userInfo.get("personal_id").toString()).setScale(0, RoundingMode.FLOOR).longValue());
         logger.info("Joined User: {}", users);
         return users;
     }
 
-//    private void signUp(HashMap<String, Object> userInfo) {
-//        Timestamp created_at = new Timestamp(new Date().getTime());
-//        Timestamp updated_at = new Timestamp(new Date().getTime());
-//
-//        User userEntity = User.builder()
-//                .personalId(Long.parseLong(userInfo.get("personal_id").toString()))
-//                .nickname(userInfo.get("name").toString())
-//                .type(User.LoginType.GOOGLE)
-//                .created_at(created_at)
-//                .updated_at(updated_at)
-//                .build();
-//
-//        userRepository.save(userEntity);
-//    }
+    //OAuthService 였던것
+    public ResponseEntity<String> createPostRequest(String code) {
+        String url = "https://oauth2.googleapis.com/token";
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("code", code);
+        params.add("client_id", CLIENT_ID);
+        params.add("client_secret", CLIENT_SECRET);
+        params.add("redirect_uri", REDIRECT_URI);
+        params.add("grant_type", GRANT_TYPE);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/x-www-form-urlencoded");
+
+        HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(params, headers);
+        ResponseEntity<String> result = restTemplate.exchange(URLDecoder.decode(url, StandardCharsets.UTF_8), HttpMethod.POST, httpEntity, String.class);
+
+        return result;
+    }
+
+    public OAuthToken getAccessToken(ResponseEntity<String> response) {
+        OAuthToken oAuthToken = null;
+        try {
+            logger.warn("getAccessToken1"+response.toString());
+            oAuthToken = objectMapper.readValue(response.getBody(), OAuthToken.class);
+            logger.warn("getAccessToken2"+oAuthToken.toString());
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return oAuthToken;
+    }
+
+    public ResponseEntity<String> createGetRequest(OAuthToken oAuthToken) {
+        String url = "https://www.googleapis.com/oauth2/v1/userinfo";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + oAuthToken.getAccessToken());
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity(headers);
+        logger.warn(request.toString());
+
+        return restTemplate.exchange(url, HttpMethod.GET, request, String.class);
+    }
+
+    public HashMap<String, Object> getUserInfo(ResponseEntity<String> userInfoResponse) throws ParseException {
+        HashMap<String, Object> userInfo = new HashMap<String, Object>();
+
+        JSONParser jsonParser = new JSONParser();
+        JSONObject jsonObject = (JSONObject) jsonParser.parse(userInfoResponse.getBody());
+        logger.warn("UserService getUserInfo "+jsonObject.toString());
+
+        userInfo.put("name", jsonObject.get("given_name"));
+        userInfo.put("personal_id", jsonObject.get("id"));
+        userInfo.put("picture", jsonObject.get("picture"));
+        logger.warn(userInfo.toString());
+
+        return userInfo;
+    }
 }

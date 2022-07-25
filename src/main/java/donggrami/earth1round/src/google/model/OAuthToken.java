@@ -1,23 +1,23 @@
 package donggrami.earth1round.src.google.model;
 
-//그냥 구글 맞춤형 토큰 관리 클래스라고 생각해주세요...
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 public class OAuthToken {
 
     private String accessToken;
     private String expiresIn;
-    private String idToken;
-    private String refreshToken;
     private String scope;
     private String tokenType;
+    private String idToken;
 
-    public OAuthToken(String accessToken, String expiresIn, String idToken, String refreshToken, String scope, String tokenType) {
-        this.accessToken = accessToken;
-        this.expiresIn = expiresIn;
-        this.idToken = idToken;
-        this.refreshToken = refreshToken;
-        this.scope = scope;
-        this.tokenType = tokenType;
-    }
+//    public OAuthToken(String accessToken, String expiresIn, String idToken, String scope, String tokenType) {
+//        this.accessToken = accessToken;
+//        this.expiresIn = expiresIn;
+//        this.idToken = idToken;
+//        this.scope = scope;
+//        this.tokenType = tokenType;
+//    }
 
     public String getAccessToken() {
         return accessToken;
@@ -29,10 +29,6 @@ public class OAuthToken {
 
     public String getIdToken() {
         return idToken;
-    }
-
-    public String getRefreshToken() {
-        return refreshToken;
     }
 
     public String getScope() {

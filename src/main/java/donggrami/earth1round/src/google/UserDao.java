@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,7 +27,7 @@ public class UserDao {
         Timestamp updated_at = new Timestamp(new Date().getTime());
 
         User userEntity = User.builder()
-                .personalId(Long.parseLong(userInfo.get("personal_id").toString()))
+                .personalId(new BigDecimal(userInfo.get("personal_id").toString()).setScale(0, RoundingMode.FLOOR).longValue())
                 .nickname(userInfo.get("name").toString())
                 .type(User.LoginType.GOOGLE)
                 .created_at(created_at)
