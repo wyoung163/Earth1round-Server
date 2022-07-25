@@ -28,8 +28,8 @@ public class Place {
     @Column(length = 100, nullable = false)
     private Long place_id;
 
-    @Column(nullable = false)
-    private String place_name;
+    @Column(nullable = false, name ="place_name")
+    private String placeName;
 
     @Column(nullable = false) // build.gradle 파일에 의존성 추가
     private Point location; // POINT(경도,위도) : latitude + longitude
