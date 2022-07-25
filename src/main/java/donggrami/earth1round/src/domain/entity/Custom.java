@@ -1,4 +1,4 @@
-package donggrami.earth1round.src.domain;
+package donggrami.earth1round.src.domain.entity;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -8,6 +8,7 @@ import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 
 @Getter
 @Entity
@@ -34,16 +35,17 @@ public class Custom {
 
     @Temporal(value = TemporalType.TIMESTAMP)
     @Column(nullable = false)
-    private Timestamp created_at;
+    private Date created_at;
+
     @Temporal(value = TemporalType.TIMESTAMP)
     @Column(nullable = false)
-    private Timestamp updated_at;
+    private Date updated_at;
 
 //    @Builder
-//    public Character(int character_id, int user_id, int character_num, String status, Timestamp created_at, Timestamp updated_at){
-//        this.character_id = character_id;
-//        this.user_id = user_id;
-//        this.character_num = character_num;
+//    public Custom(Long custom_id, User user, int custom_num, CustomStatus status, Date created_at, Date updated_at){
+//        this.custom_id = custom_id;
+//        this.user = user;
+//        this.custom_num = custom_num;
 //        this.status = status;
 //        this.created_at = created_at;
 //        this.updated_at=updated_at;

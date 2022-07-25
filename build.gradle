@@ -26,7 +26,11 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	// Spatial type
-	compile group: 'org.hibernate', name: 'hibernate-spatial', version: '5.4.4.Final'
+	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+	implementation 'com.google.code.gson:gson:2.8.7'
+	implementation group: 'org.hibernate', name: 'hibernate-spatial', version: '5.4.4.Final'
+	// JWT
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 }
 
 tasks.named('test') {
