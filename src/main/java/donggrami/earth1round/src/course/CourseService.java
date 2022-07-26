@@ -31,7 +31,7 @@ public class CourseService {
             User user = userRepository.getById(userIdByJwt);
 
             //해당 유저가 이미 진행 중인 코스가 있는지 확인
-            Course presentCourse = courseRepository.findByUser(user);
+            Course presentCourse = courseRepository.findByUserAndStatus(user, Course.CourseStatus.ACTIVE);
 
             //해당 유저가 선택한 코스가 아직 완료되지 않은 상태일 때 새로운 코스로 변경하기를 원한다면
             if(presentCourse.getCourse_id() > 0 && presentCourse.getStatus() == Course.CourseStatus.ACTIVE) {
