@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CourseRepository extends JpaRepository<Course, Long> {
-    Course findByUser(User user);
+    Course findByUserAndStatus(User user, Course.CourseStatus status);
 
     @Modifying(clearAutomatically = true)
     @Query("UPDATE Course c SET c.status = :courseStatus WHERE c.course_id = :id")
