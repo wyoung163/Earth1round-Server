@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PlaceRepository  extends JpaRepository<Place, Long> {
-    @Query(value = "select new donggrami.earth1round.src.place.model.GetPlacesRes(p.place_id, p.place_name," +
+    @Query(value = "select new donggrami.earth1round.src.place.model.GetPlacesRes(p.place_id, p.placeName," +
             " p.latitude, p.longitude) from Place p where p.status = 'ACTIVE'")
     List<GetPlacesRes> findPlaces();
     Place findByPlaceName(String placeName);
