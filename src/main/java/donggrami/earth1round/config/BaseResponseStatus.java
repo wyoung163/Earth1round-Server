@@ -22,9 +22,12 @@ public enum BaseResponseStatus {
     EXPIRED_REFRESH_TOKEN(false, 2004, "Refresh token이 만료되었습니다."),
     INVALID_REFRESH_TOKEN(false, 2005, "유효하지 않은 refresh token 입니다."),
     POST_EMPTY_REFRESH_TOKEN(false, 2006, "Refresh token을 입력해주세요."),
-    POST_PLACE_EMPTY_PLACE_NAME(false, 2007, "장소명을 입력해주세요."),
-    POST_PLACE_EMPTY_LATITUDE(false, 2008, "위도를 입력해주세요."),
-    POST_PLACE_EMPTY_LONGITUDE(false, 2009, "경도를 입력해주세요."),
+    EMPTY_USER(false, 2007, "존재하지 않는 사용자입니다."),
+
+    // [POST] /places
+    POST_PLACE_EMPTY_PLACE_NAME(false, 2100, "장소명을 입력해주세요."),
+    POST_PLACE_EMPTY_LATITUDE(false, 2101, "위도를 입력해주세요."),
+    POST_PLACE_EMPTY_LONGITUDE(false, 2102, "경도를 입력해주세요."),
 
     // [POST] /users
 
