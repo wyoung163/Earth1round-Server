@@ -1,5 +1,7 @@
 package donggrami.earth1round.src.domain.entity;
 
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,6 +19,7 @@ import org.springframework.data.geo.Point; //Point
 @Table(name = "Place")
 @Getter
 @Setter
+@NoArgsConstructor
 @DynamicInsert // default 처리를 위해
 public class Place {
     public enum PlaceStatus{
@@ -31,16 +34,36 @@ public class Place {
     @Column(nullable = false, name ="place_name")
     private String placeName;
 
-    @Column(nullable = false) // build.gradle 파일에 의존성 추가
-    private Point location; // POINT(경도,위도) : latitude + longitude
+//    @Column(nullable = false) // build.gradle 파일에 의존성 추가
+//    private Point location; // POINT(경도,위도) : latitude + longitude
+
+    @Column(nullable = false)
+    private Double latitude;
+
+    @Column(nullable = false)
+    private Double longitude;
 
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'ACTIVE'")
     private PlaceStatus status;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
     private Date created_at;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
     private Date updated_at;
+
+    @Builder
+    public Place(Long place_id, String placeName, Double latitude, Double longitude,
+                 PlaceStatus status, Date created_at, Date updated_at) {
+        this.place_id = place_id;
+        this.placeName = placeName;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.status = status;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
+    }
 }

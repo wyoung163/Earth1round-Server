@@ -23,6 +23,7 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "course_id")
     private Long course_id;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

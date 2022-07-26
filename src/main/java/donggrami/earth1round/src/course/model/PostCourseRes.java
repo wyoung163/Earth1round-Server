@@ -12,9 +12,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostCourseRes {
-    public Course course_id;
-    public Place start_place_id;
+    public long course_id;
+    public long start_place_id;
     public String start_place_name;
-    public Place end_place_id;
+    public long end_place_id;
     public String end_place_name;
 }
