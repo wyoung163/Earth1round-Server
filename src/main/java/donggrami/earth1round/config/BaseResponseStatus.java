@@ -28,6 +28,11 @@ public enum BaseResponseStatus {
 
     // [POST] /users
 
+    // [POST] /courses
+    POST_COURSES_EMPTY_STARTPLACE(false, 2300, "출발지를 입력해주세요."),
+    POST_COURSES_EMPTY_ENDPLACE(false, 2301, "도착지를 입력해주세요."),
+    POST_COURSES_WRONG_DISTANCE(false, 2302, "경로의 거리는 음수가 아닌 수로 입력해주세요."),
+
     /**
      * 3000: Response 오류
      */
