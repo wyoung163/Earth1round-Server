@@ -34,15 +34,15 @@ public class CustomService {
         try {
             Optional<User> user = userRepository.findById(user_id);
             Optional<Custom> custom = customRepository.findByUser(user.get());
-            Long custom_id = null;
+            int custom_num = 0;
             if (custom.isEmpty()) {
-                custom_id = customRepository.save(customDao.toEntity(user.get())).getCustom_id();
+                custom_num = customRepository.save(customDao.toEntity(user.get())).getCustom_num();
             }
             else {
-                custom_id = custom.get().getCustom_id();
+                custom_num = custom.get().getCustom_num();
             }
 
-            return new GetCustomRes(custom_id);
+            return new GetCustomRes(custom_num);
         }catch (NoSuchElementException exception) {
             throw new BaseException(EMPTY_USER);
         }

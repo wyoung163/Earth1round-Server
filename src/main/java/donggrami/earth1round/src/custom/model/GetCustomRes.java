@@ -10,5 +10,5 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetCustomRes {
-    private Long custom_num;
+    private int custom_num;
 }
