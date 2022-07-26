@@ -31,6 +31,9 @@ public enum BaseResponseStatus {
 
     // [POST] /users
 
+    // [PATCH] /custom
+    PATCH_CUSTOM_EMPTY_CUSTOM_NUM(false, 2400, "커스텀 번호를 입력해주세요."),
+
     /**
      * 3000: Response 오류
      */
