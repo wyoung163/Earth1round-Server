@@ -22,7 +22,7 @@ public class UserDao {
 
         User userEntity = User.builder()
                 .personalId(new BigDecimal(userInfo.get("personal_id").toString()).setScale(0, RoundingMode.FLOOR).longValue())
-                .nickname(userInfo.get("name").toString())
+ //               .nickname(userInfo.get("name").toString())
                 .type(User.LoginType.GOOGLE)
                 .created_at(created_at)
                 .updated_at(updated_at)
