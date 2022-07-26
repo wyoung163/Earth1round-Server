@@ -10,8 +10,7 @@ import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import java.sql.Date;
-import java.sql.Timestamp;
+import java.util.Date;
 import org.springframework.data.geo.Point; //Point
 
 
@@ -49,11 +48,11 @@ public class Place {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, updatable = false)
-    private java.util.Date created_at;
+    private Date created_at;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
-    private java.util.Date updated_at;
+    private Date updated_at;
 
     @Builder
     public Place(Long place_id, String placeName, Double latitude, Double longitude,
