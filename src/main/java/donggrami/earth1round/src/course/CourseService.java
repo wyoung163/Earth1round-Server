@@ -29,12 +29,29 @@ public class CourseService {
     public PostCourseRes createCourse(Long userIdByJwt, PostCourseReq postCourseReq) throws BaseException {
         try{
             User user = userRepository.getById(userIdByJwt);
-            System.out.println(user.getUser_id());
-            Place startPlace = placeRepository.findByPlaceName(postCourseReq.start_place_name);
-            Place endPlace = placeRepository.findByPlaceName(postCourseReq.end_place_name);
 
-            Course course = courseRepository.save(courseDao.insertCourse(user, startPlace, endPlace, postCourseReq.distance));
-            return new PostCourseRes(course.getCourse_id(), startPlace.getPlace_id(), postCourseReq.start_place_name, endPlace.getPlace_id(), postCourseReq.end_place_name);
+            //해당 유저가 이미 진행 중인 코스가 있는지 확인
+            Course presentCourse = courseRepository.findByUser(user);
+
+            //해당 유저가 선택한 코스가 아직 완료되지 않은 상태일 때 새로운 코스로 변경하기를 원한다면
+            if(presentCourse.getCourse_id() > 0 && presentCourse.getStatus() == Course.CourseStatus.ACTIVE) {
+                //기존 코스 status를 INACTIVE로 변경
+                int c = courseRepository.updateStatus(Course.CourseStatus.INACTIVE, presentCourse.getCourse_id());
+                System.out.println(c);
+
+                //새로운 코스 할당
+                Place startPlace = placeRepository.findByPlaceName(postCourseReq.start_place_name);
+                Place endPlace = placeRepository.findByPlaceName(postCourseReq.end_place_name);
+
+                Course course = courseRepository.save(courseDao.insertCourse(user, startPlace, endPlace, postCourseReq.distance));
+                return new PostCourseRes(course.getCourse_id(), startPlace.getPlace_id(), postCourseReq.start_place_name, endPlace.getPlace_id(), postCourseReq.end_place_name);
+            } else {
+                Place startPlace = placeRepository.findByPlaceName(postCourseReq.start_place_name);
+                Place endPlace = placeRepository.findByPlaceName(postCourseReq.end_place_name);
+
+                Course course = courseRepository.save(courseDao.insertCourse(user, startPlace, endPlace, postCourseReq.distance));
+                return new PostCourseRes(course.getCourse_id(), startPlace.getPlace_id(), postCourseReq.start_place_name, endPlace.getPlace_id(), postCourseReq.end_place_name);
+            }
         } catch (Exception exception) {
             System.out.println(exception);
             throw new BaseException(DATABASE_ERROR);

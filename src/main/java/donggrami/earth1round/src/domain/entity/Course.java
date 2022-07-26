@@ -2,6 +2,7 @@ package donggrami.earth1round.src.domain.entity;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
@@ -14,6 +15,7 @@ import java.util.Date;
 @Getter
 @Setter
 @DynamicInsert
+@NoArgsConstructor
 public class Course {
     public enum CourseStatus {
         ACTIVE, INACTIVE, COMPLETE

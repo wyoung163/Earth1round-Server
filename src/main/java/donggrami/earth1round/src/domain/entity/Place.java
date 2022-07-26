@@ -48,12 +48,12 @@ public class Place {
     private PlaceStatus status;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false)
-    private Date created_at;
+    @Column(nullable = false, updatable = false)
+    private java.util.Date created_at;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
-    private Date updated_at;
+    private java.util.Date updated_at;
 
     @Builder
     public Place(Long place_id, String placeName, Double latitude, Double longitude,

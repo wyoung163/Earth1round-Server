@@ -30,4 +30,18 @@ public class CourseDao {
                 .build();
         return courseEntity;
     }
+
+//    public Course updateStatus(User user) {
+//        Course courseEntity = Course.builder()
+//                .user(user)
+//                .start_place(startPlace)
+//                .end_place(endPlace)
+//                .distance(distance)
+//                .start_date(created_at)
+//                .end_date(null)
+//                .created_at(created_at)
+//                .updated_at(updated_at)
+//                .build();
+//        return courseEntity;
+//    }
 }
