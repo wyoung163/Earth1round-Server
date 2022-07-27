@@ -2,6 +2,7 @@ package donggrami.earth1round.src.course;
 
 import donggrami.earth1round.config.BaseException;
 import donggrami.earth1round.config.BaseResponse;
+import donggrami.earth1round.src.course.model.GetCourseRes;
 import donggrami.earth1round.src.course.model.PostCourseReq;
 import donggrami.earth1round.src.course.model.PostCourseRes;
 import donggrami.earth1round.utils.jwt.JwtService;
@@ -36,6 +37,18 @@ public class CourseController {
             Long userIdByJwt = jwtService.getUserId();
             PostCourseRes postCourseRes = courseService.createCourse(userIdByJwt, postCourseReq);
             return new BaseResponse<>(postCourseRes);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    @ResponseBody
+    @GetMapping("/course")
+    public BaseResponse<GetCourseRes> showCourse() {
+        try{
+            Long userIdByJwt = jwtService.getUserId();
+            GetCourseRes getCourseRes = courseService.getCourse(userIdByJwt);
+            return new BaseResponse<>(getCourseRes);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }

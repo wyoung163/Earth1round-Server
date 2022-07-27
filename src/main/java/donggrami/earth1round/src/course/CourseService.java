@@ -1,6 +1,8 @@
 package donggrami.earth1round.src.course;
 
 import donggrami.earth1round.config.BaseException;
+import donggrami.earth1round.config.BaseResponse;
+import donggrami.earth1round.src.course.model.GetCourseRes;
 import donggrami.earth1round.src.course.model.PostCourseReq;
 import donggrami.earth1round.src.course.model.PostCourseRes;
 import donggrami.earth1round.src.domain.entity.Course;
@@ -14,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static donggrami.earth1round.config.BaseResponseStatus.DATABASE_ERROR;
+import static donggrami.earth1round.config.BaseResponseStatus.*;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +27,16 @@ public class CourseService {
     private final CourseDao courseDao;
     private final JwtService jwtService;
 
+    //active 상태의 코스가 있는지 확인
+    public Course checkCourseExist(User user, Course.CourseStatus status) throws BaseException{
+        try{
+            return courseRepository.findByUserAndStatus(user, status);
+        } catch (Exception exception){
+            throw new BaseException(GET_COURSE_EMPTY);
+        }
+    }
+
+    //코스 저장하기(active 상태의 코스가 이미 존재한다면 기존 것 inactive로 변경하고 새로 저장)
     @Transactional
     public PostCourseRes createCourse(Long userIdByJwt, PostCourseReq postCourseReq) throws BaseException {
         try{
@@ -53,7 +65,27 @@ public class CourseService {
                 return new PostCourseRes(course.getCourse_id(), startPlace.getPlace_id(), postCourseReq.start_place_name, endPlace.getPlace_id(), postCourseReq.end_place_name);
             }
         } catch (Exception exception) {
-            System.out.println(exception);
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+
+    //존재하는 코스 불러오기
+    @Transactional
+    public GetCourseRes getCourse(Long userIdByJwt) throws BaseException {
+        try{
+            User user = userRepository.getById(userIdByJwt);
+
+            //해당 유저의 진행 중인 코스 불러오기
+            Course presentCourse = checkCourseExist(user, Course.CourseStatus.ACTIVE);
+
+            Long startPlaceId = presentCourse.getStart_place().getPlace_id();
+            Place startPlace = placeRepository.getById(startPlaceId);
+            Long endPlaceId = presentCourse.getEnd_place().getPlace_id();
+            Place endPlace = placeRepository.getById(endPlaceId);
+
+            return new GetCourseRes(presentCourse.getCourse_id(), startPlace.getPlaceName(), endPlace.getPlaceName(), presentCourse.getDistance(), presentCourse.getStart_date());
+        } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
     }
