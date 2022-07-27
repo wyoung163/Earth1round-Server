@@ -20,10 +20,9 @@ public class CourseController {
     @Autowired
     private final JwtService jwtService;
 
-
     @ResponseBody
     @PostMapping("")
-    public BaseResponse<PostCourseRes> createPost(@RequestBody PostCourseReq postCourseReq) {
+    public BaseResponse<PostCourseRes> createCourse(@RequestBody PostCourseReq postCourseReq) {
         if(postCourseReq.start_place_name.isEmpty()){
             return new BaseResponse<>(POST_COURSES_EMPTY_STARTPLACE);
         }
