@@ -13,7 +13,6 @@ import static donggrami.earth1round.config.BaseResponseStatus.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/courses")
 public class CourseController {
     @Autowired
     private final CourseService courseService;
@@ -21,7 +20,7 @@ public class CourseController {
     private final JwtService jwtService;
 
     @ResponseBody
-    @PostMapping("")
+    @PostMapping("/courses")
     public BaseResponse<PostCourseRes> createCourse(@RequestBody PostCourseReq postCourseReq) {
         if(postCourseReq.start_place_name.isEmpty()){
             return new BaseResponse<>(POST_COURSES_EMPTY_STARTPLACE);
@@ -35,8 +34,8 @@ public class CourseController {
 
         try{
             Long userIdByJwt = jwtService.getUserId();
-            PostCourseRes postPostRes = courseService.createCourse(userIdByJwt, postCourseReq);
-            return new BaseResponse<>(postPostRes);
+            PostCourseRes postCourseRes = courseService.createCourse(userIdByJwt, postCourseReq);
+            return new BaseResponse<>(postCourseRes);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }
