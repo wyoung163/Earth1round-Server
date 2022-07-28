@@ -6,7 +6,6 @@ import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/login")
 public class GoogleUserController {
 
     private GoogleUserService userService;
@@ -15,7 +14,8 @@ public class GoogleUserController {
         this.userService = googleOauthService;
     }
 
-    @GetMapping("/google")
+    @ResponseBody
+    @RequestMapping(value="/login/google", method = {RequestMethod.GET, RequestMethod.POST})
     public BaseResponse<GoogleUserRes> oauthLogin(@RequestParam(value = "code",required=false,defaultValue="") String code) throws ParseException {
         GoogleUserRes googleUserRes = userService.oauthLogin(code);
         return new BaseResponse<>(googleUserRes);
