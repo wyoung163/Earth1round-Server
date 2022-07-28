@@ -5,9 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import donggrami.earth1round.config.secret.Secret;
 import donggrami.earth1round.src.domain.entity.User;
+import donggrami.earth1round.src.domain.repository.ProfileRepository;
 import donggrami.earth1round.src.domain.repository.UserRepository;
 import donggrami.earth1round.src.google.model.GoogleUserRes;
-import donggrami.earth1round.src.google.model.OAuthToken;
+import donggrami.earth1round.src.google.model.GoogleOAuthTokenRes;
 import donggrami.earth1round.utils.jwt.JwtService;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -34,8 +35,8 @@ import java.util.HashMap;
 
 @Service
 @Configuration
-public class UserService {
-    private Logger logger = LoggerFactory.getLogger(UserService.class);
+public class GoogleUserService {
+    private Logger logger = LoggerFactory.getLogger(GoogleUserService.class);
 
     private static final String CLIENT_ID = Secret.GOOGLE_CLIENT_ID;
     private static final String CLIENT_SECRET = Secret.GOOGLE_CLIENT_SECRET;
@@ -43,13 +44,15 @@ public class UserService {
     private static final String GRANT_TYPE = "authorization_code";
 
     private final UserRepository userRepository;
-    private final UserDao userDao;
+    private final ProfileRepository profileRepository;
+    private final GoogleUserDao userDao;
     private final JwtService jwtService;
     private final ObjectMapper objectMapper;
     private final RestTemplate restTemplate;
 
-    public UserService(UserRepository userRepository, UserDao userDao, JwtService jwtService, RestTemplateBuilder restTemplate) {
+    public GoogleUserService(UserRepository userRepository, ProfileRepository profileRepository, GoogleUserDao userDao, JwtService jwtService, RestTemplateBuilder restTemplate) {
         this.userRepository = userRepository;
+        this.profileRepository = profileRepository;
         this.userDao = userDao;
         this.jwtService = jwtService;
         this.objectMapper = new ObjectMapper().setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
@@ -58,7 +61,7 @@ public class UserService {
 
     public GoogleUserRes oauthLogin(String code) throws ParseException {
         ResponseEntity<String> accessTokenResponse = createPostRequest(code);
-        OAuthToken oAuthToken = getAccessToken(accessTokenResponse);
+        GoogleOAuthTokenRes oAuthToken = getAccessToken(accessTokenResponse);
         logger.info("Access Token: {}", oAuthToken.getAccessToken());
 
         ResponseEntity<String> userInfoResponse = createGetRequest(oAuthToken);
@@ -66,7 +69,9 @@ public class UserService {
         logger.info("Google User Name: {}", userInfo.get("personal_id").toString());
 
         if (isJoinedUser(userInfo) == null) {
-            userRepository.save(userDao.signUp(userInfo));
+            User newUser = userRepository.save(userDao.insertUser(userInfo));
+
+            profileRepository.save(userDao.insertProfile(userInfo, newUser));
         }
 
         User user = userRepository.getByPersonalId(new BigDecimal(userInfo.get("personal_id").toString()).setScale(0, RoundingMode.FLOOR).longValue());
@@ -101,19 +106,18 @@ public class UserService {
         return result;
     }
 
-    public OAuthToken getAccessToken(ResponseEntity<String> response) {
-        OAuthToken oAuthToken = null;
+    public GoogleOAuthTokenRes getAccessToken(ResponseEntity<String> response) {
+        GoogleOAuthTokenRes oAuthToken = null;
         try {
-            logger.warn("getAccessToken1"+response.toString());
-            oAuthToken = objectMapper.readValue(response.getBody(), OAuthToken.class);
-            logger.warn("getAccessToken2"+oAuthToken.toString());
+            logger.info("getAccessToken1"+response.toString());
+            oAuthToken = objectMapper.readValue(response.getBody(), GoogleOAuthTokenRes.class);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
         return oAuthToken;
     }
 
-    public ResponseEntity<String> createGetRequest(OAuthToken oAuthToken) {
+    public ResponseEntity<String> createGetRequest(GoogleOAuthTokenRes oAuthToken) {
         String url = "https://www.googleapis.com/oauth2/v1/userinfo";
 
         HttpHeaders headers = new HttpHeaders();
@@ -130,12 +134,12 @@ public class UserService {
 
         JSONParser jsonParser = new JSONParser();
         JSONObject jsonObject = (JSONObject) jsonParser.parse(userInfoResponse.getBody());
-        logger.warn("UserService getUserInfo "+jsonObject.toString());
+        logger.info("UserService getUserInfo "+jsonObject.toString());
 
         userInfo.put("name", jsonObject.get("given_name"));
         userInfo.put("personal_id", jsonObject.get("id"));
         userInfo.put("picture", jsonObject.get("picture"));
-        logger.warn(userInfo.toString());
+        logger.info(userInfo.toString());
 
         return userInfo;
     }

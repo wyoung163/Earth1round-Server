@@ -1,5 +1,6 @@
 package donggrami.earth1round.src.google;
 
+import donggrami.earth1round.src.domain.entity.Profile;
 import donggrami.earth1round.src.domain.entity.User;
 import donggrami.earth1round.src.domain.repository.UserRepository;
 import lombok.NoArgsConstructor;
@@ -14,20 +15,33 @@ import java.util.HashMap;
 
 @Repository
 @NoArgsConstructor
-public class UserDao {
+public class GoogleUserDao {
 
-    User signUp(HashMap<String, Object> userInfo) {
+    public User insertUser(HashMap<String, Object> userInfo) {
         Timestamp created_at = new Timestamp(new Date().getTime());
         Timestamp updated_at = new Timestamp(new Date().getTime());
 
         User userEntity = User.builder()
                 .personalId(new BigDecimal(userInfo.get("personal_id").toString()).setScale(0, RoundingMode.FLOOR).longValue())
- //               .nickname(userInfo.get("name").toString())
                 .type(User.LoginType.GOOGLE)
                 .created_at(created_at)
                 .updated_at(updated_at)
                 .build();
 
         return userEntity;
+    }
+
+    public Profile insertProfile(HashMap<String, Object> userInfo, User user) {
+        Timestamp created_at = new Timestamp(new Date().getTime());
+        Timestamp updated_at = new Timestamp(new Date().getTime());
+
+        Profile profileEntity = Profile.builder()
+                .user(user)
+                .nickname(userInfo.get("name").toString())
+                .profile_img(userInfo.get("picture").toString())
+                .created_at(created_at)
+                .updated_at(updated_at)
+                .build();
+        return profileEntity;
     }
 }
