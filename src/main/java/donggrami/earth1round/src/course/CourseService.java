@@ -46,23 +46,23 @@ public class CourseService {
             Course presentCourse = courseRepository.findByUserAndStatus(user, Course.CourseStatus.ACTIVE);
 
             //해당 유저가 선택한 코스가 아직 완료되지 않은 상태일 때 새로운 코스로 변경하기를 원한다면
-            if(presentCourse.getCourse_id() > 0 && presentCourse.getStatus() == Course.CourseStatus.ACTIVE) {
+            if(presentCourse != null) {
                 //기존 코스 status를 INACTIVE로 변경
                 int c = courseRepository.updateStatus(Course.CourseStatus.INACTIVE, presentCourse.getCourse_id());
                 System.out.println(c);
 
                 //새로운 코스 할당
-                Place startPlace = placeRepository.findByPlaceName(postCourseReq.start_place_name);
-                Place endPlace = placeRepository.findByPlaceName(postCourseReq.end_place_name);
+                Place startPlace = placeRepository.getById(postCourseReq.start_place_id);
+                Place endPlace = placeRepository.getById(postCourseReq.end_place_id);
 
                 Course course = courseRepository.save(courseDao.insertCourse(user, startPlace, endPlace, postCourseReq.distance));
-                return new PostCourseRes(course.getCourse_id(), startPlace.getPlace_id(), postCourseReq.start_place_name, endPlace.getPlace_id(), postCourseReq.end_place_name);
+                return new PostCourseRes(course.getCourse_id(), startPlace.getPlace_id(), startPlace.getPlaceName(), endPlace.getPlace_id(), endPlace.getPlaceName());
             } else {
-                Place startPlace = placeRepository.findByPlaceName(postCourseReq.start_place_name);
-                Place endPlace = placeRepository.findByPlaceName(postCourseReq.end_place_name);
+                Place startPlace = placeRepository.getById(postCourseReq.start_place_id);
+                Place endPlace = placeRepository.getById(postCourseReq.end_place_id);
 
                 Course course = courseRepository.save(courseDao.insertCourse(user, startPlace, endPlace, postCourseReq.distance));
-                return new PostCourseRes(course.getCourse_id(), startPlace.getPlace_id(), postCourseReq.start_place_name, endPlace.getPlace_id(), postCourseReq.end_place_name);
+                return new PostCourseRes(course.getCourse_id(), startPlace.getPlace_id(), startPlace.getPlaceName(), endPlace.getPlace_id(), endPlace.getPlaceName());
             }
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);

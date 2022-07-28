@@ -23,10 +23,10 @@ public class CourseController {
     @ResponseBody
     @PostMapping("/courses")
     public BaseResponse<PostCourseRes> createCourse(@RequestBody PostCourseReq postCourseReq) {
-        if(postCourseReq.start_place_name.isEmpty()){
+        if(postCourseReq.start_place_id == null){
             return new BaseResponse<>(POST_COURSES_EMPTY_STARTPLACE);
         }
-        if(postCourseReq.end_place_name.isEmpty()){
+        if(postCourseReq.end_place_id == null){
             return new BaseResponse<>(POST_COURSES_EMPTY_ENDPLACE);
         }
         if(postCourseReq.distance < 0){
