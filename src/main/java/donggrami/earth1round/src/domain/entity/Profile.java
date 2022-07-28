@@ -8,37 +8,45 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
-@Table(name = "User")
+@Table(name = "Profile")
 @Getter
 @Setter
 @DynamicInsert
 @NoArgsConstructor
-public class User {
-    public enum LoginType {
-        KAKAO, GOOGLE, APPLE
-    }
-
+public class Profile {
     public enum UserStatus {
         ACTIVE, INACTIVE
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long user_id;
+    private Long profile_id;
 
-    @Column(name = "personal_id")
-    private Long personalId;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @Enumerated(EnumType.STRING)
-    private LoginType type;
+    @Column(length = 30, nullable = false)
+    @ColumnDefault("'User'")
+    private String nickname;
+
+    @Column(length = 255)
+    private String profile_img;
+
+    @Column(nullable = false)
+    private int level;
+
+    @PrePersist
+    public void prePersist(){
+        this.level = this.level == 0 ? 1 : this.level;
+    }
 
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'ACTIVE'")
-    private UserStatus status;
+    private User.UserStatus status;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, updatable = false)
@@ -49,10 +57,12 @@ public class User {
     private Date updated_at;
 
     @Builder
-    public User(Long user_id, Long personalId, LoginType type, UserStatus status, Timestamp created_at, Timestamp updated_at) {
-        this.user_id = user_id;
-        this.personalId = personalId;
-        this.type = type;
+    public Profile(Long profile_id, User user, String nickname, String profile_img, int level, User.UserStatus status, Date created_at, Date updated_at) {
+        this.profile_id = profile_id;
+        this.user = user;
+        this.nickname = nickname;
+        this.profile_img = profile_img;
+        this.level = level;
         this.status = status;
         this.created_at = created_at;
         this.updated_at = updated_at;

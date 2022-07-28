@@ -1,6 +1,8 @@
 package donggrami.earth1round.src.domain.entity;
 
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
@@ -13,6 +15,7 @@ import java.util.Date;
 @Getter
 @Setter
 @DynamicInsert
+@NoArgsConstructor
 public class Course {
     public enum CourseStatus {
         ACTIVE, INACTIVE, COMPLETE
@@ -56,4 +59,18 @@ public class Course {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
     private Date updated_at;
+
+    @Builder
+    public Course(Long course_id, User user, Place start_place, Place end_place, double distance, Date start_date, Date end_date, CourseStatus status, Date created_at, Date updated_at) {
+        this.course_id = course_id;
+        this.user = user;
+        this.start_place = start_place;
+        this.end_place = end_place;
+        this.distance = distance;
+        this.start_date = start_date;
+        this.end_date = end_date;
+        this.status = status;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
+    }
 }

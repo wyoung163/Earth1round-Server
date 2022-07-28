@@ -1,4 +1,4 @@
-package donggrami.earth1round.src.auth.model;
+package donggrami.earth1round.src.custom.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +9,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostTokenReq {
-    private String refresh_token;
+public class PatchCustomReq {
+    private int custom_num;
 }
