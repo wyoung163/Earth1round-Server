@@ -5,14 +5,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostCourseRes {
+public class GetCourseRes {
     public long course_id;
-    public long start_place_id;
     public String start_place_name;
-    public long end_place_id;
     public String end_place_name;
+    public double distance;
+    public Date start_date;
 }

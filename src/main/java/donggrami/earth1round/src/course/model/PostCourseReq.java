@@ -1,7 +1,7 @@
 package donggrami.earth1round.src.course.model;
 
 public class PostCourseReq {
-    public String start_place_name;
-    public String end_place_name;
+    public Long start_place_id;
+    public Long end_place_id;
     public double distance;
 }
