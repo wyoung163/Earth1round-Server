@@ -84,7 +84,14 @@ public class CourseService {
             Long endPlaceId = presentCourse.getEnd_place().getPlace_id();
             Place endPlace = placeRepository.getById(endPlaceId);
 
-            return new GetCourseRes(presentCourse.getCourse_id(), startPlace.getPlaceName(), endPlace.getPlaceName(), presentCourse.getDistance(), presentCourse.getStart_date());
+            return new GetCourseRes(
+                    presentCourse.getCourse_id(),
+                    startPlace.getPlace_id(),
+                    startPlace.getPlaceName(),
+                    endPlace.getPlace_id(),
+                    endPlace.getPlaceName(),
+                    presentCourse.getDistance(),
+                    presentCourse.getStart_date());
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
