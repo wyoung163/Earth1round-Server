@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Objects;
 
 import static donggrami.earth1round.config.BaseResponseStatus.*;
 
@@ -21,6 +20,11 @@ public class PlaceController {
     @Autowired
     private final PlaceService placeService;
 
+    /**
+     * Get Places list API
+     * [GET] /places
+     * @return BaseResponse<List<GetPlacesRes>>
+     */
     @GetMapping("")
     public BaseResponse<List<GetPlacesRes>> getPlaces() {
         try {
@@ -31,6 +35,11 @@ public class PlaceController {
         }
     }
 
+    /**
+     * Post Place API (for dev)
+     * [POST] /places/dev
+     * @return BaseResponse<PostPlaceRes>
+     */
     @ResponseBody
     @PostMapping("/dev")
     public BaseResponse<PostPlaceRes> createPlace(@RequestBody PostPlaceReq postPlaceReq) {

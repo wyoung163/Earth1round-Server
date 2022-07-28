@@ -18,7 +18,7 @@ public class PlaceDao {
 
     public Place toEntity(PostPlaceReq postPlaceReq) throws ParseException {
         return Place.builder()
-                .place_name(postPlaceReq.getPlace_name())
+                .placeName(postPlaceReq.getPlace_name())
                 .latitude(postPlaceReq.getLatitude())
                 .longitude(postPlaceReq.getLongitude())
                 .created_at(created_at)

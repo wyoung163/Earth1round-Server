@@ -33,7 +33,6 @@ public class KakaoAuthService {
 
     public User postUserRes;
 
-    @Transactional
     public User createUser(KakaoAuthDao dao, HashMap userInfo) {
         return userRepository.save(dao.toUserEntity(userInfo));
     }
@@ -48,7 +47,7 @@ public class KakaoAuthService {
             //이미 db에 정보가 등록된 회원인지 확인
             Long persoanlId = Long.valueOf(userInfo.get("personalId").toString());
             System.out.println(persoanlId);
-            User existence = userRepository.getByPersonalId(persoanlId);
+            User existence = userRepository.findByPersonalId(persoanlId);
             System.out.println(existence);
 
             //유저 등록되어 있다면 해당 user_id 받아오기
@@ -65,7 +64,7 @@ public class KakaoAuthService {
 
             //유저 등록되어 있지 않다면 insert하고 user_id 받아오기
             postUserRes = createUser(dao, userInfo);
-            System.out.println(postUserRes);
+            System.out.println("뭐라고 출력되지" + postUserRes);
             Long user_id = postUserRes.getUser_id();
 
             userInfo.put("userId", user_id);
