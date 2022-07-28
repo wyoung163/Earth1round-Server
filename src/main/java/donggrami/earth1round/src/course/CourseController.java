@@ -20,6 +20,11 @@ public class CourseController {
     @Autowired
     private final JwtService jwtService;
 
+    /**
+     * Post Course API
+     * [POST] /courses
+     * @return BaseResponse<PostCourseRes>
+     */
     @ResponseBody
     @PostMapping("/courses")
     public BaseResponse<PostCourseRes> createCourse(@RequestBody PostCourseReq postCourseReq) {
@@ -42,6 +47,11 @@ public class CourseController {
         }
     }
 
+    /**
+     * Get Course API
+     * [GET] /course
+     * @return BaseResponse<GetCourseRes>
+     */
     @ResponseBody
     @GetMapping("/course")
     public BaseResponse<GetCourseRes> showCourse() {
