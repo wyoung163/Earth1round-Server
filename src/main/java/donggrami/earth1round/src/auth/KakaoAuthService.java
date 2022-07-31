@@ -33,7 +33,6 @@ public class KakaoAuthService {
 
     public User postUserRes;
 
-    @Transactional
     public User createUser(KakaoAuthDao dao, HashMap userInfo) {
         return userRepository.save(dao.toUserEntity(userInfo));
     }
