@@ -37,6 +37,9 @@ public enum BaseResponseStatus {
     POST_COURSES_EMPTY_ENDPLACE(false, 2301, "도착지를 입력해주세요."),
     POST_COURSES_WRONG_DISTANCE(false, 2302, "경로의 거리는 음수가 아닌 수로 입력해주세요."),
 
+    // [GET] /course
+    GET_COURSE_EMPTY(false, 2303, "코스를 선택해주세요"),
+
     // [PATCH] /custom
     PATCH_CUSTOM_EMPTY_CUSTOM_NUM(false, 2400, "커스텀 번호를 입력해주세요."),
     

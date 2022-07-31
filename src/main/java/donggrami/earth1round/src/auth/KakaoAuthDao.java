@@ -28,7 +28,7 @@ public class KakaoAuthDao {
     public Profile toProfileEntity(HashMap userInfo, User postUserRes) {
         Profile profileEntity = Profile.builder()
                 .user(postUserRes)
-                .nickname(userInfo.get("nickname").toString())
+                .name(userInfo.get("nickname").toString())
                 .profile_img(userInfo.get("profileImage").toString())
                 .created_at(created_at)
                 .updated_at(updated_at)
