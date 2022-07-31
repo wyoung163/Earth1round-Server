@@ -136,7 +136,7 @@ public class GoogleUserService {
         JSONObject jsonObject = (JSONObject) jsonParser.parse(userInfoResponse.getBody());
         logger.info("UserService getUserInfo "+jsonObject.toString());
 
-        userInfo.put("name", jsonObject.get("given_name"));
+        userInfo.put("name", jsonObject.get("name"));
         userInfo.put("personal_id", jsonObject.get("id"));
         userInfo.put("picture", jsonObject.get("picture"));
         logger.info(userInfo.toString());
