@@ -70,7 +70,6 @@ public class GoogleUserService {
 
         if (isJoinedUser(userInfo) == null) {
             User newUser = userRepository.save(userDao.insertUser(userInfo));
-
             profileRepository.save(userDao.insertProfile(userInfo, newUser));
         }
 

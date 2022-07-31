@@ -5,6 +5,8 @@ import donggrami.earth1round.src.domain.entity.User;
 import donggrami.earth1round.src.domain.repository.UserRepository;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
@@ -16,6 +18,8 @@ import java.util.HashMap;
 @Repository
 @NoArgsConstructor
 public class GoogleUserDao {
+
+    private Logger logger = LoggerFactory.getLogger(GoogleUserService.class);
 
     public User insertUser(HashMap<String, Object> userInfo) {
         Timestamp created_at = new Timestamp(new Date().getTime());
@@ -35,6 +39,7 @@ public class GoogleUserDao {
         Timestamp created_at = new Timestamp(new Date().getTime());
         Timestamp updated_at = new Timestamp(new Date().getTime());
 
+        logger.warn("googleuserdaoinsertprofile?");
         Profile profileEntity = Profile.builder()
                 .user(user)
                 .name(userInfo.get("name").toString())

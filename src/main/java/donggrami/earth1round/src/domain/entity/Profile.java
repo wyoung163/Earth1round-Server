@@ -30,6 +30,7 @@ public class Profile {
     private User user;
 
     @Column(length = 30, nullable = false)
+    @ColumnDefault("'User'")
     private String name;
 
     @Column(length = 30)
