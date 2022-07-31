@@ -37,7 +37,7 @@ public class GoogleUserDao {
 
         Profile profileEntity = Profile.builder()
                 .user(user)
-                .nickname(userInfo.get("name").toString())
+                .name(userInfo.get("name").toString())
                 .profile_img(userInfo.get("picture").toString())
                 .created_at(created_at)
                 .updated_at(updated_at)
