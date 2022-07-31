@@ -30,6 +30,10 @@ public class Profile {
     private User user;
 
     @Column(length = 30, nullable = false)
+    @ColumnDefault("'User'")
+    private String name;
+
+    @Column(length = 30)
     private String nickname;
 
     @Column(length = 255)
@@ -56,9 +60,10 @@ public class Profile {
     private Date updated_at;
 
     @Builder
-    public Profile(Long profile_id, User user, String nickname, String profile_img, int level, User.UserStatus status, Date created_at, Date updated_at) {
+    public Profile(Long profile_id, User user, String name, String nickname, String profile_img, int level, User.UserStatus status, Date created_at, Date updated_at) {
         this.profile_id = profile_id;
         this.user = user;
+        this.name = name;
         this.nickname = nickname;
         this.profile_img = profile_img;
         this.level = level;
