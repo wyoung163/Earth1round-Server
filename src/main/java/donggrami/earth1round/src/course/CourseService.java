@@ -3,6 +3,7 @@ package donggrami.earth1round.src.course;
 import donggrami.earth1round.config.BaseException;
 import donggrami.earth1round.config.BaseResponse;
 import donggrami.earth1round.src.course.model.GetCourseRes;
+import donggrami.earth1round.src.course.model.PatchCourseRes;
 import donggrami.earth1round.src.course.model.PostCourseReq;
 import donggrami.earth1round.src.course.model.PostCourseRes;
 import donggrami.earth1round.src.domain.entity.Course;
@@ -69,7 +70,6 @@ public class CourseService {
         }
     }
 
-
     //존재하는 코스 불러오기
     @Transactional
     public GetCourseRes getCourse(Long userIdByJwt) throws BaseException {
@@ -92,6 +92,22 @@ public class CourseService {
                     endPlace.getPlaceName(),
                     presentCourse.getDistance(),
                     presentCourse.getStart_date());
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    //코스 완료하기
+    @Transactional
+    public PatchCourseRes patchCourse(Long userIdByJwt, Long courseId) throws BaseException {
+        try{
+            User user = userRepository.getById(userIdByJwt);
+
+            //해당 유저의 진행 중인 코스 불러오기
+            Course presentCourse = checkCourseExist(user, Course.CourseStatus.ACTIVE);
+            int course = courseRepository.updateStatus(Course.CourseStatus.INACTIVE, presentCourse.getCourse_id());
+
+            return new PatchCourseRes(courseId);
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }

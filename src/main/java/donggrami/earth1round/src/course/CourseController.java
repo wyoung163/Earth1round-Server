@@ -2,9 +2,7 @@ package donggrami.earth1round.src.course;
 
 import donggrami.earth1round.config.BaseException;
 import donggrami.earth1round.config.BaseResponse;
-import donggrami.earth1round.src.course.model.GetCourseRes;
-import donggrami.earth1round.src.course.model.PostCourseReq;
-import donggrami.earth1round.src.course.model.PostCourseRes;
+import donggrami.earth1round.src.course.model.*;
 import donggrami.earth1round.utils.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +57,24 @@ public class CourseController {
             Long userIdByJwt = jwtService.getUserId();
             GetCourseRes getCourseRes = courseService.getCourse(userIdByJwt);
             return new BaseResponse<>(getCourseRes);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
+     * Patch Course API
+     * [PATCH] /course
+     * @return BaseResponse<PatchCourseRes>
+     */
+    @ResponseBody
+    @GetMapping("/course")
+    public BaseResponse<PatchCourseRes> completeCourse(@RequestBody PatchCourseReq patchCourseReq) {
+        try{
+            Long userIdByJwt = jwtService.getUserId();
+            Long courseId = patchCourseReq.id;
+            PatchCourseRes patchCourseRes = courseService.patchCourse(userIdByJwt, courseId);
+            return new BaseResponse<>(patchCourseRes);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }
