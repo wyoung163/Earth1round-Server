@@ -30,7 +30,8 @@ public enum BaseResponseStatus {
     POST_PLACE_EMPTY_LONGITUDE(false, 2102, "경도를 입력해주세요."),
 
     // [POST] /users
-    
+    PATCH_USERS_EMPTY_NICKNAME(false, 2200, "수정할 유저 닉네임을 입력해주세요."),
+
     // [POST] /courses
     POST_COURSES_EMPTY_STARTPLACE(false, 2300, "출발지를 입력해주세요."),
     POST_COURSES_EMPTY_ENDPLACE(false, 2301, "도착지를 입력해주세요."),
