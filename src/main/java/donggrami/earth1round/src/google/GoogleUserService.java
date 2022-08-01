@@ -108,7 +108,7 @@ public class GoogleUserService {
     public GoogleOAuthTokenRes getAccessToken(ResponseEntity<String> response) {
         GoogleOAuthTokenRes oAuthToken = null;
         try {
-            logger.info("getAccessToken1"+response.toString());
+  //          logger.info("getAccessToken1"+response.toString());
             oAuthToken = objectMapper.readValue(response.getBody(), GoogleOAuthTokenRes.class);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -123,7 +123,7 @@ public class GoogleUserService {
         headers.add("Authorization", "Bearer " + oAuthToken.getAccessToken());
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity(headers);
-        logger.warn(request.toString());
+   //     logger.warn(request.toString());
 
         return restTemplate.exchange(url, HttpMethod.GET, request, String.class);
     }
@@ -133,7 +133,7 @@ public class GoogleUserService {
 
         JSONParser jsonParser = new JSONParser();
         JSONObject jsonObject = (JSONObject) jsonParser.parse(userInfoResponse.getBody());
-        logger.info("UserService getUserInfo "+jsonObject.toString());
+   //     logger.info("UserService getUserInfo "+jsonObject.toString());
 
         userInfo.put("name", jsonObject.get("name"));
         userInfo.put("personal_id", jsonObject.get("id"));
