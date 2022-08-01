@@ -1,4 +1,4 @@
-package donggrami.earth1round.src.users.model;
+package donggrami.earth1round.src.profiles.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +9,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PatchUsersReq {
+public class PatchProfilesReq {
     private String new_nickname;
 }

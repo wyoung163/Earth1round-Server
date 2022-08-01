@@ -1,9 +1,9 @@
-package donggrami.earth1round.src.users;
+package donggrami.earth1round.src.profiles;
 
 import donggrami.earth1round.config.BaseException;
 import donggrami.earth1round.config.BaseResponse;
 import donggrami.earth1round.src.google.GoogleUserService;
-import donggrami.earth1round.src.users.model.PatchUsersReq;
+import donggrami.earth1round.src.profiles.model.PatchProfilesReq;
 import donggrami.earth1round.utils.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -13,18 +13,18 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/users")
-public class UsersController {
+@RequestMapping("/profiles")
+public class ProfilesController {
 
     @Autowired
-    private final UsersService userService;
+    private final ProfilesService userService;
     @Autowired
     private final JwtService jwtService;
 
     private Logger logger = LoggerFactory.getLogger(GoogleUserService.class);
 
     @PatchMapping("/nickname")
-    public BaseResponse<String> patchNickname(@RequestBody PatchUsersReq patchUserReq) {
+    public BaseResponse<String> patchNickname(@RequestBody PatchProfilesReq patchUserReq) {
         try{
             Long user_id = jwtService.getUserId();
 
