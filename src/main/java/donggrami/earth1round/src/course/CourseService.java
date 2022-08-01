@@ -66,7 +66,7 @@ public class CourseService {
         }
     }
 
-    //존재하는 코스 불러오기
+    //현재 진행 중인 코스 불러오기
     @Transactional
     public GetCourseRes getCourse(Long userIdByJwt) throws BaseException {
         User user = userRepository.getById(userIdByJwt);
@@ -110,7 +110,7 @@ public class CourseService {
         };
 
         try{
-            //해당 아이디의 코스가 존재하면 COMPLETE로 STATUS 변경
+            //COMPLETE로 STATUS 변경
             int updatedCourse = courseRepository.updateStatus(Course.CourseStatus.COMPLETE, presentCourse.getCourse_id());
             return new PatchCourseRes(presentCourse.getCourse_id());
         } catch (Exception exception) {
