@@ -68,12 +68,11 @@ public class CourseController {
      * @return BaseResponse<PatchCourseRes>
      */
     @ResponseBody
-    @GetMapping("/course")
-    public BaseResponse<PatchCourseRes> completeCourse(@RequestBody PatchCourseReq patchCourseReq) {
+    @PatchMapping("/course")
+    public BaseResponse<PatchCourseRes> completeCourse() {
         try{
             Long userIdByJwt = jwtService.getUserId();
-            Long courseId = patchCourseReq.id;
-            PatchCourseRes patchCourseRes = courseService.patchCourse(userIdByJwt, courseId);
+            PatchCourseRes patchCourseRes = courseService.patchCourse(userIdByJwt);
             return new BaseResponse<>(patchCourseRes);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));

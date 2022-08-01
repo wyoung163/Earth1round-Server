@@ -10,5 +10,5 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PatchCourseRes {
-    public Long id;
+    public Long couse_id;
 }
