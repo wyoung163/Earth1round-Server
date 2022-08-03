@@ -64,7 +64,6 @@ public class KakaoAuthService {
 
             //유저 등록되어 있지 않다면 insert하고 user_id 받아오기
             postUserRes = createUser(dao, userInfo);
-            System.out.println("뭐라고 출력되지" + postUserRes);
             Long user_id = postUserRes.getUser_id();
 
             userInfo.put("userId", user_id);

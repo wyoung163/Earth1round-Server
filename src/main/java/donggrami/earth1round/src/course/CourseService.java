@@ -3,6 +3,7 @@ package donggrami.earth1round.src.course;
 import donggrami.earth1round.config.BaseException;
 import donggrami.earth1round.config.BaseResponse;
 import donggrami.earth1round.src.course.model.GetCourseRes;
+import donggrami.earth1round.src.course.model.PatchCourseRes;
 import donggrami.earth1round.src.course.model.PostCourseReq;
 import donggrami.earth1round.src.course.model.PostCourseRes;
 import donggrami.earth1round.src.domain.entity.Course;
@@ -16,6 +17,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 import static donggrami.earth1round.config.BaseResponseStatus.*;
 
 @Service
@@ -27,13 +31,9 @@ public class CourseService {
     private final CourseDao courseDao;
     private final JwtService jwtService;
 
-    //active 상태의 코스가 있는지 확인
-    public Course checkCourseExist(User user, Course.CourseStatus status) throws BaseException{
-        try{
-            return courseRepository.findByUserAndStatus(user, status);
-        } catch (Exception exception){
-            throw new BaseException(GET_COURSE_EMPTY);
-        }
+    //active 상태의 현재 코스 확인
+    public Course getPresentCourse(User user, Course.CourseStatus status) {
+        return courseRepository.findByUserAndStatus(user, status);
     }
 
     //코스 저장하기(active 상태의 코스가 이미 존재한다면 기존 것 inactive로 변경하고 새로 저장)
@@ -48,8 +48,8 @@ public class CourseService {
             //해당 유저가 선택한 코스가 아직 완료되지 않은 상태일 때 새로운 코스로 변경하기를 원한다면
             if(presentCourse != null) {
                 //기존 코스 status를 INACTIVE로 변경
-                int c = courseRepository.updateStatus(Course.CourseStatus.INACTIVE, presentCourse.getCourse_id());
-                System.out.println(c);
+                int updatedCourse = courseRepository.updateStatus(Course.CourseStatus.INACTIVE, presentCourse.getCourse_id());
+                System.out.println(updatedCourse);
 
                 //새로운 코스 할당
                 Place startPlace = placeRepository.getById(postCourseReq.start_place_id);
@@ -69,22 +69,56 @@ public class CourseService {
         }
     }
 
-
-    //존재하는 코스 불러오기
+    //현재 진행 중인 코스 불러오기
     @Transactional
     public GetCourseRes getCourse(Long userIdByJwt) throws BaseException {
+        User user = userRepository.getById(userIdByJwt);
+
+        //해당 유저의 진행 중인 코스 불러오기
+        Course presentCourse = getPresentCourse(user, Course.CourseStatus.ACTIVE);
+
+        if(presentCourse == null){
+            throw new BaseException(GET_COURSE_EMPTY);
+        };
+
         try{
-            User user = userRepository.getById(userIdByJwt);
-
-            //해당 유저의 진행 중인 코스 불러오기
-            Course presentCourse = checkCourseExist(user, Course.CourseStatus.ACTIVE);
-
             Long startPlaceId = presentCourse.getStart_place().getPlace_id();
             Place startPlace = placeRepository.getById(startPlaceId);
             Long endPlaceId = presentCourse.getEnd_place().getPlace_id();
             Place endPlace = placeRepository.getById(endPlaceId);
 
-            return new GetCourseRes(presentCourse.getCourse_id(), startPlace.getPlaceName(), endPlace.getPlaceName(), presentCourse.getDistance(), presentCourse.getStart_date());
+            return new GetCourseRes(
+                    presentCourse.getCourse_id(),
+                    startPlace.getPlace_id(),
+                    startPlace.getPlaceName(),
+                    endPlace.getPlace_id(),
+                    endPlace.getPlaceName(),
+                    presentCourse.getDistance(),
+                    presentCourse.getStart_date());
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    //코스 완료하기
+    @Transactional
+    public PatchCourseRes patchCourse(Long userIdByJwt) throws BaseException {
+        User user = userRepository.getById(userIdByJwt);
+
+        //해당 유저의 진행 중인 코스 불러오기
+        Course presentCourse = getPresentCourse(user, Course.CourseStatus.ACTIVE);
+
+        if(presentCourse == null){
+            throw new BaseException(GET_COURSE_EMPTY);
+        };
+
+        Timestamp endDate = new Timestamp(new Date().getTime());
+
+        try{
+            //COMPLETE로 STATUS 변경
+            int updatedStatus = courseRepository.updateStatus(Course.CourseStatus.COMPLETE, presentCourse.getCourse_id());
+            int updatedEndDate = courseRepository.updateEndDate(endDate, presentCourse.getCourse_id());
+            return new PatchCourseRes(presentCourse.getCourse_id());
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
