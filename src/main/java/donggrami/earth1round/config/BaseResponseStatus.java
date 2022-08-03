@@ -38,9 +38,6 @@ public enum BaseResponseStatus {
 
     // [GET] /course
     GET_COURSE_EMPTY(false, 2303, "코스를 선택해주세요"),
-
-    // [PATCH] /custom
-    PATCH_CUSTOM_EMPTY_CUSTOM_NUM(false, 2400, "커스텀 번호를 입력해주세요."),
     
     /**
      * 3000: Response 오류
