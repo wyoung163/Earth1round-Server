@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import static donggrami.earth1round.config.BaseResponseStatus.PATCH_CUSTOM_EMPTY_CUSTOM_NUM;
-import static donggrami.earth1round.config.BaseResponseStatus.POST_PLACE_EMPTY_PLACE_NAME;
 
 @RestController
 @RequiredArgsConstructor
