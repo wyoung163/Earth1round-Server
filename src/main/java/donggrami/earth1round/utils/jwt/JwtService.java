@@ -15,6 +15,12 @@ import static donggrami.earth1round.config.BaseResponseStatus.*;
 @Service
 public class JwtService {
 
+    private final AuthorizationExtractor authorizationExtractor;
+
+    public JwtService(AuthorizationExtractor authorizationExtractor) {
+        this.authorizationExtractor = authorizationExtractor;
+    }
+
     /**
      * JWT 생성 - Access Token
      * @param user_id
@@ -59,7 +65,11 @@ public class JwtService {
         } catch (ExpiredJwtException e) {
             throw new BaseException(EXPIRED_ACCESS_TOKEN);
         } catch (JwtException e) {
+            System.out.println(e);
             throw new BaseException(INVALID_ACCESS_TOKEN);
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
         }
     }
 
@@ -86,7 +96,7 @@ public class JwtService {
     private String getAccessToken(){
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
                 .getRequest();
-        return request.getHeader("ACCESS-TOKEN");
+        return authorizationExtractor.extract(request, "Bearer ");
     }
 
     /**
