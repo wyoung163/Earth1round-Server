@@ -17,6 +17,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 import static donggrami.earth1round.config.BaseResponseStatus.*;
 
 @Service
@@ -109,9 +112,12 @@ public class CourseService {
             throw new BaseException(GET_COURSE_EMPTY);
         };
 
+        Timestamp endDate = new Timestamp(new Date().getTime());
+
         try{
             //COMPLETE로 STATUS 변경
-            int updatedCourse = courseRepository.updateStatus(Course.CourseStatus.COMPLETE, presentCourse.getCourse_id());
+            int updatedStatus = courseRepository.updateStatus(Course.CourseStatus.COMPLETE, presentCourse.getCourse_id());
+            int updatedEndDate = courseRepository.updateEndDate(endDate, presentCourse.getCourse_id());
             return new PatchCourseRes(presentCourse.getCourse_id());
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
