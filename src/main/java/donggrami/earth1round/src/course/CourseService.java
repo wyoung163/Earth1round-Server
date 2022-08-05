@@ -104,15 +104,14 @@ public class CourseService {
     @Transactional
     public PatchCourseRes patchCourse(Long userIdByJwt) {
         User user = userRepository.getById(userIdByJwt);
-
+        Timestamp endDate = new Timestamp(new Date().getTime());
+        
         //해당 유저의 진행 중인 코스 불러오기
         Course presentCourse = getPresentCourse(user, Course.CourseStatus.ACTIVE);
 
         if(presentCourse == null){
             throw new BaseException(GET_COURSE_EMPTY, HttpStatus.BAD_REQUEST);
         };
-
-        Timestamp endDate = new Timestamp(new Date().getTime());
 
         try{
             //COMPLETE로 STATUS 변경

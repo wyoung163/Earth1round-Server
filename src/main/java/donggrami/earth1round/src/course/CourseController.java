@@ -71,6 +71,5 @@ public class CourseController {
         Long userIdByJwt = jwtService.getUserId();
         PatchCourseRes patchCourseRes = courseService.patchCourse(userIdByJwt);
         return new BaseResponse<>(patchCourseRes);
-
     }
 }
