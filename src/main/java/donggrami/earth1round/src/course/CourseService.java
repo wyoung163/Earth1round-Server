@@ -1,7 +1,6 @@
 package donggrami.earth1round.src.course;
 
 import donggrami.earth1round.config.BaseException;
-import donggrami.earth1round.config.BaseResponse;
 import donggrami.earth1round.src.course.model.GetCourseRes;
 import donggrami.earth1round.src.course.model.PatchCourseRes;
 import donggrami.earth1round.src.course.model.PostCourseReq;
@@ -14,6 +13,7 @@ import donggrami.earth1round.src.domain.repository.PlaceRepository;
 import donggrami.earth1round.src.domain.repository.UserRepository;
 import donggrami.earth1round.utils.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -65,20 +65,20 @@ public class CourseService {
                 return new PostCourseRes(course.getCourse_id(), startPlace.getPlace_id(), startPlace.getPlaceName(), endPlace.getPlace_id(), endPlace.getPlaceName());
             }
         } catch (Exception exception) {
-            throw new BaseException(DATABASE_ERROR);
+            throw new BaseException(DATABASE_ERROR, HttpStatus.BAD_REQUEST);
         }
     }
 
     //현재 진행 중인 코스 불러오기
     @Transactional
-    public GetCourseRes getCourse(Long userIdByJwt) throws BaseException {
+    public GetCourseRes getCourse(Long userIdByJwt) {
         User user = userRepository.getById(userIdByJwt);
 
         //해당 유저의 진행 중인 코스 불러오기
         Course presentCourse = getPresentCourse(user, Course.CourseStatus.ACTIVE);
 
         if(presentCourse == null){
-            throw new BaseException(GET_COURSE_EMPTY);
+            throw new BaseException(GET_COURSE_EMPTY, HttpStatus.BAD_REQUEST);
         };
 
         try{
@@ -96,20 +96,20 @@ public class CourseService {
                     presentCourse.getDistance(),
                     presentCourse.getStart_date());
         } catch (Exception exception) {
-            throw new BaseException(DATABASE_ERROR);
+            throw new BaseException(DATABASE_ERROR, HttpStatus.BAD_REQUEST);
         }
     }
 
     //코스 완료하기
     @Transactional
-    public PatchCourseRes patchCourse(Long userIdByJwt) throws BaseException {
+    public PatchCourseRes patchCourse(Long userIdByJwt) {
         User user = userRepository.getById(userIdByJwt);
 
         //해당 유저의 진행 중인 코스 불러오기
         Course presentCourse = getPresentCourse(user, Course.CourseStatus.ACTIVE);
 
         if(presentCourse == null){
-            throw new BaseException(GET_COURSE_EMPTY);
+            throw new BaseException(GET_COURSE_EMPTY, HttpStatus.BAD_REQUEST);
         };
 
         Timestamp endDate = new Timestamp(new Date().getTime());
@@ -120,7 +120,7 @@ public class CourseService {
             int updatedEndDate = courseRepository.updateEndDate(endDate, presentCourse.getCourse_id());
             return new PatchCourseRes(presentCourse.getCourse_id());
         } catch (Exception exception) {
-            throw new BaseException(DATABASE_ERROR);
+            throw new BaseException(DATABASE_ERROR, HttpStatus.BAD_REQUEST);
         }
     }
 }

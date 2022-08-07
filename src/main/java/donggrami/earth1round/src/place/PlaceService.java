@@ -8,6 +8,7 @@ import donggrami.earth1round.src.place.model.PostPlaceRes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Point;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class PlaceService {
         try{
             return placeRepository.findPlaces();
         } catch (Exception exception) {
-            throw new BaseException(DATABASE_ERROR);
+            throw new BaseException(DATABASE_ERROR, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -35,7 +36,7 @@ public class PlaceService {
             Long place_id = placeRepository.save(placeDao.toEntity(postPlaceReq)).getPlace_id();
             return new PostPlaceRes(place_id);
         } catch (Exception exception) {
-            throw new BaseException(DATABASE_ERROR);
+            throw new BaseException(DATABASE_ERROR, HttpStatus.BAD_REQUEST);
         }
     }
 }

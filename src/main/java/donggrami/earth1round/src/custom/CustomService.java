@@ -10,6 +10,7 @@ import donggrami.earth1round.src.domain.repository.CustomRepository;
 import donggrami.earth1round.src.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -44,10 +45,10 @@ public class CustomService {
 
             return new GetCustomRes(custom_num);
         }catch (NoSuchElementException exception) {
-            throw new BaseException(EMPTY_USER);
+            throw new BaseException(EMPTY_USER, HttpStatus.BAD_REQUEST);
         }
         catch (Exception exception) {
-            throw new BaseException(DATABASE_ERROR);
+            throw new BaseException(DATABASE_ERROR, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -62,9 +63,9 @@ public class CustomService {
                 customRepository.save(patch_custom);
             }
         } catch (NoSuchElementException exception) {
-            throw new BaseException(EMPTY_USER);
+            throw new BaseException(EMPTY_USER, HttpStatus.BAD_REQUEST);
         } catch (Exception exception) {
-            throw new BaseException(DATABASE_ERROR);
+            throw new BaseException(DATABASE_ERROR, HttpStatus.BAD_REQUEST);
         }
     }
 }
