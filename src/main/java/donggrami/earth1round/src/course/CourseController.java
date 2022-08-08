@@ -35,7 +35,7 @@ public class CourseController {
         if (postCourseReq.end_place_id == null) {
             throw new BaseException(POST_COURSES_EMPTY_ENDPLACE, HttpStatus.BAD_REQUEST);
         }
-        
+
         if (postCourseReq.distance <= 0) {
             throw new BaseException(POST_COURSES_INVALID_DISTANCE, HttpStatus.BAD_REQUEST);
         }
