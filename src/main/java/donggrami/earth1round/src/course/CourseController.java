@@ -35,9 +35,13 @@ public class CourseController {
         if (postCourseReq.end_place_id == null) {
             throw new BaseException(POST_COURSES_EMPTY_ENDPLACE, HttpStatus.BAD_REQUEST);
         }
+        
+        if (postCourseReq.distance <= 0) {
+            throw new BaseException(POST_COURSES_INVALID_DISTANCE, HttpStatus.BAD_REQUEST);
+        }
 
-        if (postCourseReq.distance < 0) {
-            throw new BaseException(POST_COURSES_WRONG_DISTANCE, HttpStatus.BAD_REQUEST);
+        if (postCourseReq.start_place_id == postCourseReq.end_place_id) {
+            throw new BaseException(POST_COURSES_SAME_PLACES, HttpStatus.BAD_REQUEST);
         }
 
         Long userIdByJwt = jwtService.getUserId();

@@ -45,6 +45,15 @@ public class CourseService {
             //해당 유저가 이미 진행 중인 코스가 있는지 확인
             Course presentCourse = courseRepository.findByUserAndStatus(user, Course.CourseStatus.ACTIVE);
 
+            //존재하는 장소인지 확인
+            if(courseRepository.getById(postCourseReq.start_place_id).getCourse_id() <= 0){
+                throw new BaseException(GET_COURSE_EMPTY, HttpStatus.BAD_REQUEST);
+            };
+
+            if(courseRepository.getById(postCourseReq.end_place_id).getCourse_id() <= 0){
+                throw new BaseException(GET_COURSE_EMPTY, HttpStatus.BAD_REQUEST);
+            };
+
             //해당 유저가 선택한 코스가 아직 완료되지 않은 상태일 때 새로운 코스로 변경하기를 원한다면
             if(presentCourse != null) {
                 //기존 코스 status를 INACTIVE로 변경
@@ -105,7 +114,7 @@ public class CourseService {
     public PatchCourseRes patchCourse(Long userIdByJwt) {
         User user = userRepository.getById(userIdByJwt);
         Timestamp endDate = new Timestamp(new Date().getTime());
-        
+
         //해당 유저의 진행 중인 코스 불러오기
         Course presentCourse = getPresentCourse(user, Course.CourseStatus.ACTIVE);
 
