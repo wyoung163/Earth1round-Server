@@ -45,7 +45,7 @@ public class CourseService {
             throw new BaseException(POST_COURSES_INVALID_STARTPLACE, HttpStatus.BAD_REQUEST);
         };
 
-        if(placeRepository.getById(postCourseReq.end_place_id).equals(Optional.empty())){
+        if(placeRepository.findById(postCourseReq.end_place_id).equals(Optional.empty())){
             throw new BaseException(POST_COURSES_INVALID_ENDPLACE, HttpStatus.BAD_REQUEST);
         };
 
