@@ -52,7 +52,8 @@ public enum BaseResponseStatus {
      * 4000: Database 오류
      */
     DATABASE_ERROR(false, 4000, "데이터베이스 연결에 실패하였습니다."),
-
+    VALIDATION_ERROR(false, 4001, "값이 유효하지 않습니다."),
+    VALIDATION_TYPE_ERROR(false, 4002, "값의 타입이 유효하지 않습니다."),
     /**
      * 5000: Server 오류
      */

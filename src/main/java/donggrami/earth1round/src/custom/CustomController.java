@@ -7,7 +7,10 @@ import donggrami.earth1round.src.custom.model.PatchCustomReq;
 import donggrami.earth1round.utils.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 import static donggrami.earth1round.config.BaseResponseStatus.PATCH_CUSTOM_EMPTY_CUSTOM_NUM;
 
@@ -43,18 +46,14 @@ public class CustomController {
      * @return BaseResponse<GetCustomRes>
      */
     @PatchMapping("")
-    public BaseResponse<String> patchCustom(@RequestBody PatchCustomReq patchCustomReq) {
-        try{
-            Long user_id = jwtService.getUserId();
-            if(patchCustomReq.getCustom_num() == 0) {
-                return new BaseResponse<>(PATCH_CUSTOM_EMPTY_CUSTOM_NUM);
-            }
-            customService.modifyCustom(user_id, patchCustomReq);
-            String result = "커스텀 번호를 변경했습니다.";
+    public BaseResponse<String> patchCustom(@Valid @RequestBody PatchCustomReq patchCustomReq) {
+        Long user_id = jwtService.getUserId();
+//        if (patchCustomReq.getCustom_num() == 0) {
+//            throw new BaseException(PATCH_CUSTOM_EMPTY_CUSTOM_NUM, HttpStatus.BAD_REQUEST);
+//        }
+        customService.modifyCustom(user_id, patchCustomReq);
+        String result = "커스텀 번호를 변경했습니다.";
 
-            return new BaseResponse<>(result);
-        } catch (BaseException exception) {
-            return new BaseResponse<>(exception.getStatus());
-        }
+        return new BaseResponse<>(result);
     }
 }
