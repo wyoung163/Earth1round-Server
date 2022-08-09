@@ -31,7 +31,7 @@ public class CustomService {
     @Autowired
     private final UserRepository userRepository;
 
-    public GetCustomRes retrieveCustom(Long user_id) throws BaseException{
+    public GetCustomRes retrieveCustom(Long user_id) {
         try {
             Optional<User> user = userRepository.findById(user_id);
             Optional<Custom> custom = customRepository.findByUser(user.get());
@@ -52,7 +52,7 @@ public class CustomService {
         }
     }
 
-    public void modifyCustom(Long user_id, PatchCustomReq patchCustomReq) throws BaseException {
+    public void modifyCustom(Long user_id, PatchCustomReq patchCustomReq) {
         try {
             Optional<User> user = userRepository.findById(user_id);
             Optional<Custom> custom = customRepository.findByUser(user.get());
