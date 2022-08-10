@@ -59,7 +59,6 @@ public class CourseService {
             if(presentCourse != null) {
                 //기존 코스 status를 INACTIVE로 변경
                 int updatedCourse = courseRepository.updateStatus(Course.CourseStatus.INACTIVE, presentCourse.getCourse_id());
-                System.out.println(updatedCourse);
 
                 //새로운 코스 할당
                 Place startPlace = placeRepository.getById(postCourseReq.start_place_id);
