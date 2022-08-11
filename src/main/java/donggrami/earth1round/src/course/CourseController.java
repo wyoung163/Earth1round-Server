@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static donggrami.earth1round.config.BaseResponseStatus.*;
 
 @RestController
@@ -72,5 +74,20 @@ public class CourseController {
         PatchCourseRes patchCourseRes = courseService.patchCourse(userIdByJwt);
         return new BaseResponse<>(patchCourseRes);
 
+    }
+
+    //완료한 이전 코스 목록 불러오기
+    /**
+     * Get Courses API
+     * [GET] /courses
+     *
+     * @return BaseResponse<GetCourseListRes>
+     */
+    @ResponseBody
+    @GetMapping("/courses")
+    public BaseResponse<List<GetCourseListRes>> showCourseList() {
+        Long userIdByJwt = jwtService.getUserId();
+        List<GetCourseListRes> getCourseRes = courseService.getCourseList(userIdByJwt);
+        return new BaseResponse<>(getCourseRes);
     }
 }
