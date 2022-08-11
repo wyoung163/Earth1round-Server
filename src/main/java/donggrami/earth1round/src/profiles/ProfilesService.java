@@ -65,7 +65,7 @@ public class ProfilesService {
                 throw new BaseException(EMPTY_USER, HttpStatus.BAD_REQUEST);
             }
             if(user.isPresent()) {
-                Profile profiles = profileRepository.findByUser(user.get()).get();
+                Profile profiles = profileRepository.findByUser(user.get()).get(); // (Type=Profile) profiles
                 getProfileRes = new GetMypageProfilesRes(profiles.getName(), profiles.getNickname(), profiles.getProfile_img());
             }
             return getProfileRes;
@@ -83,10 +83,9 @@ public class ProfilesService {
                 throw new BaseException(EMPTY_USER, HttpStatus.BAD_REQUEST);
             }
             if(user.isPresent()) {
-                Profile profiles = profileRepository.findByUser(user.get()).get();
+                Profile profiles = profileRepository.findByUser(user.get()).get(); // (Type=Profile) profiles
                 getRoomProfilesRes = new GetRoomProfilesRes(profiles.getName(), profiles.getNickname(), profiles.getLevel());
             }
-
             return getRoomProfilesRes;
         }catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR, HttpStatus.BAD_REQUEST);
