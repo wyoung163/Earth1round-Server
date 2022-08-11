@@ -11,6 +11,7 @@ import donggrami.earth1round.src.domain.repository.UserRepository;
 import donggrami.earth1round.utils.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -77,12 +78,10 @@ public class KakaoAuthService {
                 String refresh_token = jwtService.createRefreshToken(user_id);
                 return new PostUserRes(access_token, refresh_token, user_id);
             } catch (Exception exception) {
-                System.out.println(exception);
-                throw new BaseException(DATABASE_ERROR);
+                throw new BaseException(DATABASE_ERROR, HttpStatus.BAD_REQUEST);
             }
         } catch (Exception exception) {
-            System.out.println(exception);
-            throw new BaseException(DATABASE_ERROR);
+            throw new BaseException(DATABASE_ERROR, HttpStatus.BAD_REQUEST);
         }
     }
 }
