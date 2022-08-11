@@ -63,7 +63,7 @@ public class CourseController {
         }
     }
 
-    //샤인
+    //완료한 이전 코스 목록 불러오기
     @ResponseBody
     @GetMapping("/courses")
     public BaseResponse<List<GetCourseListRes>> showCourseList() {
