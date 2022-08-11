@@ -2,6 +2,7 @@ package donggrami.earth1round.src.course;
 
 import donggrami.earth1round.config.BaseException;
 import donggrami.earth1round.config.BaseResponse;
+import donggrami.earth1round.src.course.model.GetCourseListRes;
 import donggrami.earth1round.src.course.model.GetCourseRes;
 import donggrami.earth1round.src.course.model.PostCourseReq;
 import donggrami.earth1round.src.course.model.PostCourseRes;
@@ -11,10 +12,16 @@ import donggrami.earth1round.src.domain.entity.User;
 import donggrami.earth1round.src.domain.repository.CourseRepository;
 import donggrami.earth1round.src.domain.repository.PlaceRepository;
 import donggrami.earth1round.src.domain.repository.UserRepository;
+import donggrami.earth1round.src.google.GoogleUserService;
 import donggrami.earth1round.utils.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static donggrami.earth1round.config.BaseResponseStatus.*;
 
@@ -26,6 +33,7 @@ public class CourseService {
     public final UserRepository userRepository;
     private final CourseDao courseDao;
     private final JwtService jwtService;
+    private Logger logger = LoggerFactory.getLogger(GoogleUserService.class);
 
     //active 상태의 코스가 있는지 확인
     public Course checkCourseExist(User user, Course.CourseStatus status) throws BaseException{
@@ -87,6 +95,22 @@ public class CourseService {
             return new GetCourseRes(presentCourse.getCourse_id(), startPlace.getPlaceName(), endPlace.getPlaceName(), presentCourse.getDistance(), presentCourse.getStart_date());
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    //완료한 이전 코스 목록 불러오기
+    public List<GetCourseListRes> getCourseList(Long userIdByJwt) throws BaseException {
+        try{
+            List<Course> courses = courseRepository.findByUser(userRepository.getById(userIdByJwt));
+            List<GetCourseListRes> courseListRes = new ArrayList<>();
+            for (Course c : courses) {
+                if (c.getStatus() == Course.CourseStatus.COMPLETE) {
+                    courseListRes.add(new GetCourseListRes(c.getCourse_id(), userIdByJwt, c.getStart_place().getPlace_id(), c.getEnd_place().getPlace_id(), c.getDistance(), c.getStart_date(), c.getEnd_date()));
+                }
+            }
+            return courseListRes;
+        } catch (Exception exception) {
+            throw new BaseException(RESPONSE_ERROR);
         }
     }
 }

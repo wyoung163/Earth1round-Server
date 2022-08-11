@@ -2,13 +2,20 @@ package donggrami.earth1round.src.course;
 
 import donggrami.earth1round.config.BaseException;
 import donggrami.earth1round.config.BaseResponse;
+import donggrami.earth1round.src.course.model.GetCourseListRes;
 import donggrami.earth1round.src.course.model.GetCourseRes;
 import donggrami.earth1round.src.course.model.PostCourseReq;
 import donggrami.earth1round.src.course.model.PostCourseRes;
+import donggrami.earth1round.src.domain.entity.Course;
+import donggrami.earth1round.src.google.GoogleUserService;
 import donggrami.earth1round.utils.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static donggrami.earth1round.config.BaseResponseStatus.*;
 
@@ -19,6 +26,8 @@ public class CourseController {
     private final CourseService courseService;
     @Autowired
     private final JwtService jwtService;
+
+    private Logger logger = LoggerFactory.getLogger(GoogleUserService.class);
 
     @ResponseBody
     @PostMapping("/courses")
@@ -48,6 +57,19 @@ public class CourseController {
         try{
             Long userIdByJwt = jwtService.getUserId();
             GetCourseRes getCourseRes = courseService.getCourse(userIdByJwt);
+            return new BaseResponse<>(getCourseRes);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    //샤인
+    @ResponseBody
+    @GetMapping("/courses")
+    public BaseResponse<List<GetCourseListRes>> showCourseList() {
+        try{
+            Long userIdByJwt = jwtService.getUserId();
+            List<GetCourseListRes> getCourseRes = courseService.getCourseList(userIdByJwt);
             return new BaseResponse<>(getCourseRes);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
