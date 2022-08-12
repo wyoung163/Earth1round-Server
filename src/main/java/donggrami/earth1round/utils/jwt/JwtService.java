@@ -3,6 +3,7 @@ package donggrami.earth1round.utils.jwt;
 import donggrami.earth1round.config.BaseException;
 import donggrami.earth1round.config.secret.Secret;
 import io.jsonwebtoken.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -63,10 +64,10 @@ public class JwtService {
             Claims claims = getClaims(jwt);
             return true;
         } catch (ExpiredJwtException e) {
-            throw new BaseException(EXPIRED_ACCESS_TOKEN);
+            throw new BaseException(EXPIRED_ACCESS_TOKEN, HttpStatus.BAD_REQUEST);
         } catch (JwtException e) {
             System.out.println(e);
-            throw new BaseException(INVALID_ACCESS_TOKEN);
+            throw new BaseException(INVALID_ACCESS_TOKEN, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             System.out.println(e);
             return false;
@@ -83,9 +84,9 @@ public class JwtService {
             Claims claims = getClaims(refreshToken);
             return true;
         } catch (ExpiredJwtException e) {
-            throw new BaseException(EXPIRED_REFRESH_TOKEN);
+            throw new BaseException(EXPIRED_REFRESH_TOKEN, HttpStatus.BAD_REQUEST);
         } catch (JwtException e) {
-            throw new BaseException(INVALID_REFRESH_TOKEN);
+            throw new BaseException(INVALID_REFRESH_TOKEN, HttpStatus.BAD_REQUEST);
         }
     }
 

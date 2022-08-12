@@ -10,6 +10,7 @@ import donggrami.earth1round.src.domain.repository.CustomRepository;
 import donggrami.earth1round.src.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -30,7 +31,7 @@ public class CustomService {
     @Autowired
     private final UserRepository userRepository;
 
-    public GetCustomRes retrieveCustom(Long user_id) throws BaseException{
+    public GetCustomRes retrieveCustom(Long user_id) {
         try {
             Optional<User> user = userRepository.findById(user_id);
             Optional<Custom> custom = customRepository.findByUser(user.get());
@@ -44,14 +45,14 @@ public class CustomService {
 
             return new GetCustomRes(custom_num);
         }catch (NoSuchElementException exception) {
-            throw new BaseException(EMPTY_USER);
+            throw new BaseException(EMPTY_USER, HttpStatus.BAD_REQUEST);
         }
         catch (Exception exception) {
-            throw new BaseException(DATABASE_ERROR);
+            throw new BaseException(DATABASE_ERROR, HttpStatus.BAD_REQUEST);
         }
     }
 
-    public void modifyCustom(Long user_id, PatchCustomReq patchCustomReq) throws BaseException {
+    public void modifyCustom(Long user_id, PatchCustomReq patchCustomReq) {
         try {
             Optional<User> user = userRepository.findById(user_id);
             Optional<Custom> custom = customRepository.findByUser(user.get());
@@ -62,9 +63,9 @@ public class CustomService {
                 customRepository.save(patch_custom);
             }
         } catch (NoSuchElementException exception) {
-            throw new BaseException(EMPTY_USER);
+            throw new BaseException(EMPTY_USER, HttpStatus.BAD_REQUEST);
         } catch (Exception exception) {
-            throw new BaseException(DATABASE_ERROR);
+            throw new BaseException(DATABASE_ERROR, HttpStatus.BAD_REQUEST);
         }
     }
 }

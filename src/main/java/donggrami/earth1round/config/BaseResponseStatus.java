@@ -35,10 +35,13 @@ public enum BaseResponseStatus {
     // [POST] /courses
     POST_COURSES_EMPTY_STARTPLACE(false, 2300, "출발지를 입력해주세요."),
     POST_COURSES_EMPTY_ENDPLACE(false, 2301, "도착지를 입력해주세요."),
-    POST_COURSES_WRONG_DISTANCE(false, 2302, "경로의 거리는 음수가 아닌 수로 입력해주세요."),
+    POST_COURSES_INVALID_DISTANCE(false, 2302, "경로의 거리는 음수가 아닌 수로 입력해주세요."),
+    POST_COURSES_SAME_PLACES(false, 2303, "출발지와 도착지를 서로 다른 장소로 입력해주세요"),
+    POST_COURSES_INVALID_STARTPLACE(false, 2304, "출발지에 존재하지 않는 장소를 입력하였습니다."),
+    POST_COURSES_INVALID_ENDPLACE(false, 2305, "도착지에 존재하지 않는 장소를 입력하였습니다."),
 
     // [GET] /course
-    GET_COURSE_EMPTY(false, 2303, "코스를 선택해주세요"),
+    GET_COURSE_EMPTY(false, 2310, "코스를 선택해주세요"),
 
     // [PATCH] /custom
     PATCH_CUSTOM_EMPTY_CUSTOM_NUM(false, 2400, "커스텀 번호를 입력해주세요."),
@@ -52,7 +55,8 @@ public enum BaseResponseStatus {
      * 4000: Database 오류
      */
     DATABASE_ERROR(false, 4000, "데이터베이스 연결에 실패하였습니다."),
-
+    VALIDATION_ERROR(false, 4001, "값이 유효하지 않습니다."),
+    VALIDATION_TYPE_ERROR(false, 4002, "값의 타입이 유효하지 않습니다."),
     /**
      * 5000: Server 오류
      */
