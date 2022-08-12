@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Optional;
 import java.util.List;
 
 import static donggrami.earth1round.config.BaseResponseStatus.*;
@@ -38,6 +39,15 @@ public class CourseService {
     //코스 저장하기(active 상태의 코스가 이미 존재한다면 기존 것 inactive로 변경하고 새로 저장)
     @Transactional
     public PostCourseRes createCourse(Long userIdByJwt, PostCourseReq postCourseReq) throws BaseException {
+        //존재하는 장소인지 확인
+        if(placeRepository.findById(postCourseReq.start_place_id).equals(Optional.empty())){
+            throw new BaseException(POST_COURSES_INVALID_STARTPLACE, HttpStatus.BAD_REQUEST);
+        };
+
+        if(placeRepository.findById(postCourseReq.end_place_id).equals(Optional.empty())){
+            throw new BaseException(POST_COURSES_INVALID_ENDPLACE, HttpStatus.BAD_REQUEST);
+        };
+
         try{
             User user = userRepository.getById(userIdByJwt);
 
@@ -48,7 +58,6 @@ public class CourseService {
             if(presentCourse != null) {
                 //기존 코스 status를 INACTIVE로 변경
                 int updatedCourse = courseRepository.updateStatus(Course.CourseStatus.INACTIVE, presentCourse.getCourse_id());
-                System.out.println(updatedCourse);
 
                 //새로운 코스 할당
                 Place startPlace = placeRepository.getById(postCourseReq.start_place_id);
@@ -103,6 +112,7 @@ public class CourseService {
     @Transactional
     public PatchCourseRes patchCourse(Long userIdByJwt) {
         User user = userRepository.getById(userIdByJwt);
+        Timestamp endDate = new Timestamp(new Date().getTime());
 
         //해당 유저의 진행 중인 코스 불러오기
         Course presentCourse = getPresentCourse(user, Course.CourseStatus.ACTIVE);
@@ -110,8 +120,6 @@ public class CourseService {
         if(presentCourse == null){
             throw new BaseException(GET_COURSE_EMPTY, HttpStatus.BAD_REQUEST);
         };
-
-        Timestamp endDate = new Timestamp(new Date().getTime());
 
         try{
             //COMPLETE로 STATUS 변경

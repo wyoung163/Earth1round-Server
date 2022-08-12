@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
+
 
 import static donggrami.earth1round.config.BaseResponseStatus.*;
 
@@ -29,17 +31,21 @@ public class CourseController {
      */
     @ResponseBody
     @PostMapping("/courses")
-    public BaseResponse<PostCourseRes> createCourse(@RequestBody PostCourseReq postCourseReq) {
-        if (postCourseReq.start_place_id == null) {
-            throw new BaseException(POST_COURSES_EMPTY_STARTPLACE, HttpStatus.BAD_REQUEST);
-        }
+    public BaseResponse<PostCourseRes> createCourse(@Valid @RequestBody PostCourseReq postCourseReq) {
+//        if (postCourseReq.start_place_id == null) {
+//            throw new BaseException(POST_COURSES_EMPTY_STARTPLACE, HttpStatus.BAD_REQUEST);
+//        }
 
-        if (postCourseReq.end_place_id == null) {
-            throw new BaseException(POST_COURSES_EMPTY_ENDPLACE, HttpStatus.BAD_REQUEST);
-        }
+//        if (postCourseReq.end_place_id == null) {
+//            throw new BaseException(POST_COURSES_EMPTY_ENDPLACE, HttpStatus.BAD_REQUEST);
+//        }
 
-        if (postCourseReq.distance < 0) {
-            throw new BaseException(POST_COURSES_WRONG_DISTANCE, HttpStatus.BAD_REQUEST);
+//        if (postCourseReq.distance <= 0) {
+//            throw new BaseException(POST_COURSES_INVALID_DISTANCE, HttpStatus.BAD_REQUEST);
+//        }
+
+        if (postCourseReq.start_place_id == postCourseReq.end_place_id) {
+            throw new BaseException(POST_COURSES_SAME_PLACES, HttpStatus.BAD_REQUEST);
         }
 
         Long userIdByJwt = jwtService.getUserId();
@@ -73,7 +79,6 @@ public class CourseController {
         Long userIdByJwt = jwtService.getUserId();
         PatchCourseRes patchCourseRes = courseService.patchCourse(userIdByJwt);
         return new BaseResponse<>(patchCourseRes);
-
     }
 
     //완료한 이전 코스 목록 불러오기
