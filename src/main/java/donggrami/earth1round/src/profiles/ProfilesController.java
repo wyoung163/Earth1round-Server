@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/profiles")
@@ -24,16 +26,10 @@ public class ProfilesController {
     private Logger logger = LoggerFactory.getLogger(GoogleUserService.class);
 
     @PatchMapping("/nickname")
-    public BaseResponse<String> patchNickname(@RequestBody PatchProfilesReq patchUserReq) {
-        try{
-            Long user_id = jwtService.getUserId();
-
-            userService.modifyNickname(user_id, patchUserReq);
-            String result = "유저 닉네임을 수정하였습니다.";
-
-            return new BaseResponse<>(result);
-        } catch (BaseException exception) {
-            return new BaseResponse<>(exception.getStatus());
-        }
+    public BaseResponse<String> patchNickname(@Valid @RequestBody PatchProfilesReq patchUserReq) {
+        Long user_id = jwtService.getUserId();
+        userService.modifyNickname(user_id, patchUserReq);
+        String result = "유저 닉네임을 수정하였습니다.";
+        return new BaseResponse<>(result);
     }
 }

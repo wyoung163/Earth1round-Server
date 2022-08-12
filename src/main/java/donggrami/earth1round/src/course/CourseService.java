@@ -1,10 +1,7 @@
 package donggrami.earth1round.src.course;
 
 import donggrami.earth1round.config.BaseException;
-import donggrami.earth1round.src.course.model.GetCourseRes;
-import donggrami.earth1round.src.course.model.PatchCourseRes;
-import donggrami.earth1round.src.course.model.PostCourseReq;
-import donggrami.earth1round.src.course.model.PostCourseRes;
+import donggrami.earth1round.src.course.model.*;
 import donggrami.earth1round.src.domain.entity.Course;
 import donggrami.earth1round.src.domain.entity.Place;
 import donggrami.earth1round.src.domain.entity.User;
@@ -18,8 +15,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
+import java.util.List;
 
 import static donggrami.earth1round.config.BaseResponseStatus.*;
 
@@ -129,6 +128,23 @@ public class CourseService {
             return new PatchCourseRes(presentCourse.getCourse_id());
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    //완료한 이전 코스 목록 불러오기
+    public List<GetCourseListRes> getCourseList(Long userIdByJwt) throws BaseException {
+        try{
+            List<Course> courses = courseRepository.findByUser(userRepository.getById(userIdByJwt));
+            List<GetCourseListRes> courseListRes = new ArrayList<>();
+            for (Course c : courses) {
+                //status가 COMPLETE인것만 return
+                if (c.getStatus() == Course.CourseStatus.COMPLETE) {
+                    courseListRes.add(new GetCourseListRes(c.getCourse_id(), userIdByJwt, c.getStart_place().getPlace_id(), c.getEnd_place().getPlace_id(), c.getDistance(), c.getStart_date(), c.getEnd_date()));
+                }
+            }
+            return courseListRes;
+        } catch (Exception exception) {
+            throw new BaseException(RESPONSE_ERROR, HttpStatus.BAD_REQUEST);
         }
     }
 }
