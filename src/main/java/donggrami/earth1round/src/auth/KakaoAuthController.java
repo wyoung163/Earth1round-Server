@@ -3,6 +3,7 @@ package donggrami.earth1round.src.auth;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import donggrami.earth1round.config.BaseException;
+import donggrami.earth1round.src.auth.model.DeleteUserRes;
 import donggrami.earth1round.src.auth.model.PostTokenReq;
 import donggrami.earth1round.src.auth.model.PostTokenRes;
 import donggrami.earth1round.src.auth.model.PostUserRes;
@@ -15,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -56,11 +59,14 @@ public class KakaoAuthController {
      */
     // 카카오 연동정보 조회
     @RequestMapping(value = "/login/kakao")
-    public BaseResponse<PostUserRes> kakaoLogin(@RequestParam(value = "code", required = false) String code) throws Exception {
-        String access_Token = getKakaoAccessToken(code);
+    public BaseResponse<PostUserRes> kakaoLogin(@RequestParam(value = "code", required = false) String code, HttpServletRequest req) throws Exception {
+        String access_token = getKakaoAccessToken(code);
 
-        HashMap<String, Object> userInfo = getKakaoUserInfo(access_Token);
+        HashMap<String, Object> userInfo = getKakaoUserInfo(access_token);
         System.out.println(userInfo);
+        
+        HttpSession session = req.getSession();
+        session.setAttribute("kakaoAccessToken", access_token);
 
         PostUserRes postUserRes = service.createUser(userInfo);
         System.out.println(postUserRes);
@@ -165,6 +171,64 @@ public class KakaoAuthController {
         }
 
         return userInfo;
+    }
+
+    /**
+     * 회원탈퇴 API
+     * [DELETE] /unlink/kakao
+     * @return BaseResponse<DeleteUserRes>
+     */
+    // 카카오 연동정보 조회
+    //@ResponseBody
+    @RequestMapping(value = "/unlink/kakao")
+    public BaseResponse<DeleteUserRes> kakaoUnlink() throws Exception {
+        try{
+            String access_Token = "";
+
+            String isUnlinked = unlinkKakaoAccess(access_Token);
+            DeleteUserRes deleteUserRes = null;
+            //DeleteUserRes deleteUserRes = service.deleteUser(userInfo);
+            //System.out.println(deleteUserRes);
+
+            return new BaseResponse<>(deleteUserRes);}
+        catch(BaseException exception){
+            System.out.println(exception);
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    //계정 연결 해지
+    public String unlinkKakaoAccess(String access_Token) {
+        String reqURL = "https://kapi.kakao.com/v1/user/unlink";
+        try {
+            URL url = new URL(reqURL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+
+            // 요청에 필요한 Header에 포함될 내용
+            conn.setRequestProperty("Authorization", "Bearer " + access_Token);
+
+            int responseCode = conn.getResponseCode();
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+            String line = "";
+            String result = "";
+
+            while ((line = br.readLine()) != null) {
+                result += line;
+            }
+            System.out.println(result);
+
+            JsonParser parser = new JsonParser();
+            JsonElement element = parser.parse(result);
+
+        } catch (IOException e) {
+            System.out.println(e);
+            e.printStackTrace();
+        }
+
+        return "success";
     }
 
     /**
