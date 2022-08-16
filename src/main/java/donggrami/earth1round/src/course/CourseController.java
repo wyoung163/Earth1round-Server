@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
+
 
 import static donggrami.earth1round.config.BaseResponseStatus.*;
 
@@ -77,5 +79,20 @@ public class CourseController {
         Long userIdByJwt = jwtService.getUserId();
         PatchCourseRes patchCourseRes = courseService.patchCourse(userIdByJwt);
         return new BaseResponse<>(patchCourseRes);
+    }
+
+    //완료한 이전 코스 목록 불러오기
+    /**
+     * Get Courses API
+     * [GET] /courses
+     *
+     * @return BaseResponse<GetCourseListRes>
+     */
+    @ResponseBody
+    @GetMapping("/courses")
+    public BaseResponse<List<GetCourseListRes>> showCourseList() {
+        Long userIdByJwt = jwtService.getUserId();
+        List<GetCourseListRes> getCourseRes = courseService.getCourseList(userIdByJwt);
+        return new BaseResponse<>(getCourseRes);
     }
 }
