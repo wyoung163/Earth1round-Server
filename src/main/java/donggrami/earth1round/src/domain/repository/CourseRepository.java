@@ -14,6 +14,7 @@ import java.sql.Timestamp;
 public interface CourseRepository extends JpaRepository<Course, Long> {
     Course findByUserAndStatus(User user, Course.CourseStatus status);
     List<Course> findByUser(User userId);
+    void deleteByUser(User userId);
 
     @Modifying(clearAutomatically = true)
     @Query("UPDATE Course c SET c.status = :courseStatus WHERE c.course_id = :id")
