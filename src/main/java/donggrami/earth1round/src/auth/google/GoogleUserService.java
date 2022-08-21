@@ -38,7 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-import static donggrami.earth1round.config.BaseResponseStatus.RESPONSE_ERROR;
+import static donggrami.earth1round.config.BaseResponseStatus.*;
 
 @Service
 @Configuration
@@ -104,7 +104,7 @@ public class GoogleUserService {
             User user = userRepository.findByPersonalId(personal_id);
             //Settings
             if (user == null){
-                throw new BaseException(RESPONSE_ERROR, HttpStatus.BAD_REQUEST);
+                throw new BaseException(EMPTY_USER, HttpStatus.BAD_REQUEST);
             }
             List<Course> courseList = courseRepository.findByUser(user);
             Optional<Custom> customList = customRepository.findByUser(user);
@@ -122,7 +122,7 @@ public class GoogleUserService {
             logger.warn("user ok");
 
         } catch (Exception exception) {
-            throw new BaseException(RESPONSE_ERROR, HttpStatus.BAD_REQUEST);
+            throw new BaseException(DATABASE_ERROR, HttpStatus.BAD_REQUEST);
         }
     }
 

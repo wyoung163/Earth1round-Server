@@ -1,11 +1,13 @@
 package donggrami.earth1round.src.profiles;
 
 import donggrami.earth1round.config.BaseException;
+import donggrami.earth1round.src.auth.google.GoogleUserService;
 import donggrami.earth1round.src.domain.entity.Profile;
 import donggrami.earth1round.src.domain.entity.User;
 import donggrami.earth1round.src.domain.repository.ProfileRepository;
 import donggrami.earth1round.src.domain.repository.UserRepository;
-import donggrami.earth1round.src.auth.google.GoogleUserService;
+import donggrami.earth1round.src.profiles.model.GetMypageProfilesRes;
+import donggrami.earth1round.src.profiles.model.GetRoomProfilesRes;
 import donggrami.earth1round.src.profiles.model.PatchProfilesReq;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -13,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import java.util.NoSuchElementException;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -49,6 +52,42 @@ public class ProfilesService {
                 }
             }
         } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    public GetMypageProfilesRes getMypageProfile(Long user_id) throws BaseException{
+        try{
+            Optional<User> user = userRepository.findById(user_id);
+            Optional<Profile> profile = profileRepository.findByUser(user.get());
+            GetMypageProfilesRes getProfileRes = null;
+            if (profile.isEmpty()) {
+                throw new BaseException(EMPTY_USER, HttpStatus.BAD_REQUEST);
+            }
+            if(user.isPresent()) {
+                Profile profiles = profileRepository.findByUser(user.get()).get(); // (Type=Profile) profiles
+                getProfileRes = new GetMypageProfilesRes(profiles.getName(), profiles.getNickname(), profiles.getProfile_img());
+            }
+            return getProfileRes;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    public GetRoomProfilesRes getRoomProfile(Long user_id) throws BaseException{
+        try{
+            Optional<User> user = userRepository.findById(user_id);
+            Optional<Profile> profile = profileRepository.findByUser(user.get());
+            GetRoomProfilesRes getRoomProfilesRes = null;
+            if (profile.isEmpty()) {
+                throw new BaseException(EMPTY_USER, HttpStatus.BAD_REQUEST);
+            }
+            if(user.isPresent()) {
+                Profile profiles = profileRepository.findByUser(user.get()).get(); // (Type=Profile) profiles
+                getRoomProfilesRes = new GetRoomProfilesRes(profiles.getName(), profiles.getNickname(), profiles.getLevel());
+            }
+            return getRoomProfilesRes;
+        }catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR, HttpStatus.BAD_REQUEST);
         }
     }

@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'donggrami'
-version = '0.0.3'
+version = '0.0.4'
 sourceCompatibility = '15'
 
 configurations {
