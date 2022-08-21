@@ -8,20 +8,22 @@ import donggrami.earth1round.src.domain.entity.User;
 import donggrami.earth1round.src.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 import static donggrami.earth1round.config.BaseResponseStatus.RESPONSE_ERROR;
 
+@Service
 @RequiredArgsConstructor
 public class AuthService {
     private final UserRepository userRepository;
 
-    public void userWithdrawal(Long user_id){
+    public void userWithdrawal(Long user_id) throws BaseException{
         try{
             //Settings
-            if (userRepository.findByPersonalId(user_id) == null){
+            if (userRepository.findById(user_id) == null){
                 throw new BaseException(RESPONSE_ERROR, HttpStatus.BAD_REQUEST);
             }
 

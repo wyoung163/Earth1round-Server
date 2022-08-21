@@ -20,5 +20,6 @@ public class InterceptorConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/login/google")
                 .excludePathPatterns("/re-issue")
                 .excludePathPatterns("/places/dev");
+                //.excludePathPatterns("/unlink") <-- 카카오 test할 때는 jwt를 불러올 수가 없어서 넣어서 test했습니다!
     }
 }

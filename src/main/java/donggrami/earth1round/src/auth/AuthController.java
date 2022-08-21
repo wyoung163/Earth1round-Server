@@ -9,10 +9,10 @@ import donggrami.earth1round.src.auth.kakao.model.DeleteUserRes;
 import donggrami.earth1round.src.auth.kakao.model.PostTokenReq;
 import donggrami.earth1round.src.auth.kakao.model.PostTokenRes;
 import donggrami.earth1round.utils.jwt.JwtService;
-import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -24,11 +24,11 @@ import static donggrami.earth1round.config.BaseResponseStatus.POST_EMPTY_REFRESH
 @RestController
 public class AuthController {
 
-    private AuthService service;
+    private AuthService authService;
     private final JwtService jwtService;
 
-    public AuthController(AuthService authservice, JwtService jwtService) {
-        this.service = authservice;
+    public AuthController(AuthService authService, JwtService jwtService) {
+        this.authService = authService;
         this.jwtService = jwtService;
     }
 
@@ -37,19 +37,24 @@ public class AuthController {
      * [DELETE] /unlink
      * @return BaseResponse<DeleteUserRes>
      */
-    @ResponseBody
-    @DeleteMapping(value="/unlink")
-    public BaseResponse<String> withdrawal(HttpServletRequest req) throws ParseException {
-            //카카오 토큰 확인을 위한 세션 정보 가져오기
-            String access_Token = req.getAttribute("kakaoAccessToken").toString();
-            if(!access_Token.isEmpty()) {
-                String isUnlinked = unlinkKakaoAccess(access_Token);
-            }
+    //@ResponseBody
+    //@DeleteMapping(value="/unlink")
+    @RequestMapping(value="/unlink")
+    public BaseResponse<String> withdrawal(HttpServletRequest req) throws Exception {
+        //카카오 토큰 확인을 위한 세션 정보 가져오기
+        HttpSession session = req.getSession();
+        String access_Token = session.getAttribute("kakaoAccessToken").toString();
+        System.out.println("access_Token: " + access_Token);
 
-            Long userIdByJwt = jwtService.getUserId();
-            service.userWithdrawal(userIdByJwt);
-            String result = "회원 탈퇴가 완료되었습니다.";
-            return new BaseResponse<>(result);
+        if(!access_Token.isEmpty()) {
+            String isUnlinked = unlinkKakaoAccess(access_Token);
+        }
+
+        //Long userIdByJwt = new Long(9); <--- test할 때는 user_id를 임의로 넣어서 확인했습니다!
+        Long userIdByJwt = jwtService.getUserId();
+        authService.userWithdrawal(userIdByJwt);
+        String result = "회원 탈퇴가 완료되었습니다.";
+        return new BaseResponse<>(result);
     }
 
     //카카오 계정 연결 해지
@@ -79,7 +84,7 @@ public class AuthController {
             JsonElement element = parser.parse(result);
 
         } catch (IOException e) {
-            System.out.println(e);
+            //System.out.println(e);
             e.printStackTrace();
         }
 

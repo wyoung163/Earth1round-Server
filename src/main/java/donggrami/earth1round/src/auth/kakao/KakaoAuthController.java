@@ -67,6 +67,7 @@ public class KakaoAuthController {
         
         HttpSession session = req.getSession();
         session.setAttribute("kakaoAccessToken", access_token);
+        System.out.println(session.getAttribute("kakaoAccessToken"));
 
         PostUserRes postUserRes = service.createUser(userInfo);
         System.out.println(postUserRes);
