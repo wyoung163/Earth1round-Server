@@ -1,8 +1,7 @@
 package donggrami.earth1round.src.profiles;
 
-import donggrami.earth1round.config.BaseException;
 import donggrami.earth1round.config.BaseResponse;
-import donggrami.earth1round.src.google.GoogleUserService;
+import donggrami.earth1round.src.auth.google.GoogleUserService;
 import donggrami.earth1round.src.profiles.model.PatchProfilesReq;
 import donggrami.earth1round.utils.jwt.JwtService;
 import lombok.RequiredArgsConstructor;

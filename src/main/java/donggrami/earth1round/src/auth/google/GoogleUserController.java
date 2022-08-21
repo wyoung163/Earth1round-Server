@@ -1,7 +1,7 @@
-package donggrami.earth1round.src.google;
+package donggrami.earth1round.src.auth.google;
 
 import donggrami.earth1round.config.BaseResponse;
-import donggrami.earth1round.src.google.model.GoogleUserRes;
+import donggrami.earth1round.src.auth.google.model.GoogleUserRes;
 import donggrami.earth1round.utils.jwt.JwtService;
 import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.*;

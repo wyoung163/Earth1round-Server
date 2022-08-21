@@ -1,4 +1,4 @@
-package donggrami.earth1round.src.google.model;
+package donggrami.earth1round.src.auth.google.model;
 
 import lombok.NoArgsConstructor;
 

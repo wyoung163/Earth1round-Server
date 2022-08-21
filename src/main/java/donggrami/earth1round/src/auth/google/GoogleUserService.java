@@ -1,10 +1,12 @@
-package donggrami.earth1round.src.google;
+package donggrami.earth1round.src.auth.google;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import donggrami.earth1round.config.BaseException;
 import donggrami.earth1round.config.secret.Secret;
+import donggrami.earth1round.src.auth.google.model.GoogleOAuthTokenRes;
+import donggrami.earth1round.src.auth.google.model.GoogleUserRes;
 import donggrami.earth1round.src.domain.entity.Course;
 import donggrami.earth1round.src.domain.entity.Custom;
 import donggrami.earth1round.src.domain.entity.Profile;
@@ -13,8 +15,6 @@ import donggrami.earth1round.src.domain.repository.CourseRepository;
 import donggrami.earth1round.src.domain.repository.CustomRepository;
 import donggrami.earth1round.src.domain.repository.ProfileRepository;
 import donggrami.earth1round.src.domain.repository.UserRepository;
-import donggrami.earth1round.src.google.model.GoogleUserRes;
-import donggrami.earth1round.src.google.model.GoogleOAuthTokenRes;
 import donggrami.earth1round.utils.jwt.JwtService;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
