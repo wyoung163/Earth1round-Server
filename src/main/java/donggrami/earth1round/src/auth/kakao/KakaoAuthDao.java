@@ -1,4 +1,4 @@
-package donggrami.earth1round.src.auth;
+package donggrami.earth1round.src.auth.kakao;
 
 import donggrami.earth1round.src.domain.entity.Profile;
 import donggrami.earth1round.src.domain.entity.User;

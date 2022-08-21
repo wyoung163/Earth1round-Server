@@ -49,7 +49,7 @@ public enum BaseResponseStatus {
     /**
      * 3000: Response 오류
      */
-    RESPONSE_ERROR(false, 3000, "값을 불러오는데 실패하였습니다."),
+    RESPONSE_ERROR(false, 3000, "값을 불러오는 데 실패하였습니다."),
 
     /**
      * 4000: Database 오류
