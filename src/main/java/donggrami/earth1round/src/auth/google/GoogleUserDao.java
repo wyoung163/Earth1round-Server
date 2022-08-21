@@ -1,10 +1,8 @@
-package donggrami.earth1round.src.google;
+package donggrami.earth1round.src.auth.google;
 
 import donggrami.earth1round.src.domain.entity.Profile;
 import donggrami.earth1round.src.domain.entity.User;
-import donggrami.earth1round.src.domain.repository.UserRepository;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
