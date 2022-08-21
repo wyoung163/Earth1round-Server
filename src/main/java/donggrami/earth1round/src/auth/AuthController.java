@@ -37,20 +37,18 @@ public class AuthController {
      * [DELETE] /unlink
      * @return BaseResponse<DeleteUserRes>
      */
-    //@ResponseBody
-    //@DeleteMapping(value="/unlink")
     @RequestMapping(value="/unlink")
     public BaseResponse<String> withdrawal(HttpServletRequest req) throws Exception {
         //카카오 토큰 확인을 위한 세션 정보 가져오기
         HttpSession session = req.getSession();
-        String access_Token = session.getAttribute("kakaoAccessToken").toString();
-        System.out.println("access_Token: " + access_Token);
+        Object access_Token = session.getAttribute("kakaoAccessToken");
+        //System.out.println("access_Token: " + access_Token);
 
-        if(!access_Token.isEmpty()) {
-            String isUnlinked = unlinkKakaoAccess(access_Token);
+        if(access_Token != null) {
+            String isUnlinked = unlinkKakaoAccess(access_Token.toString());
         }
 
-        //Long userIdByJwt = new Long(9); <--- test할 때는 user_id를 임의로 넣어서 확인했습니다!
+        //Long userIdByJwt = new Long(12); //<--- 카카오 test할 때 연결해지 확인을 위해 user_id를 임의로 넣어서 확인했습니다!
         Long userIdByJwt = jwtService.getUserId();
         authService.userWithdrawal(userIdByJwt);
         String result = "회원 탈퇴가 완료되었습니다.";
