@@ -26,6 +26,7 @@ public class GoogleUserController {
         return new BaseResponse<>(googleUserRes);
     }
 
+
     //Moved to AuthController
 //    @ResponseBody
 //    @DeleteMapping(value="/withdrawal")

@@ -6,6 +6,7 @@ import donggrami.earth1round.src.domain.entity.Profile;
 import donggrami.earth1round.src.domain.entity.User;
 import donggrami.earth1round.src.domain.repository.ProfileRepository;
 import donggrami.earth1round.src.domain.repository.UserRepository;
+import donggrami.earth1round.src.auth.google.GoogleUserService;
 import donggrami.earth1round.src.profiles.model.GetMypageProfilesRes;
 import donggrami.earth1round.src.profiles.model.GetRoomProfilesRes;
 import donggrami.earth1round.src.profiles.model.PatchProfilesReq;
