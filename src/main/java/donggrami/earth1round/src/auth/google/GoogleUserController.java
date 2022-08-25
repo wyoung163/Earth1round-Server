@@ -26,12 +26,14 @@ public class GoogleUserController {
         return new BaseResponse<>(googleUserRes);
     }
 
-    @ResponseBody
-    @DeleteMapping(value="/withdrawal")
-    public BaseResponse<String> withdrawal() throws ParseException {
-        Long userIdByJwt = jwtService.getUserId();
-        userService.googleWithdrawal(userIdByJwt);
-        String result = "회원 탈퇴가 완료되었습니다.";
-        return new BaseResponse<>(result);
-    }
+
+    //Moved to AuthController
+//    @ResponseBody
+//    @DeleteMapping(value="/withdrawal")
+//    public BaseResponse<String> withdrawal() throws ParseException {
+//        Long userIdByJwt = jwtService.getUserId();
+//        userService.googleWithdrawal(userIdByJwt);
+//        String result = "회원 탈퇴가 완료되었습니다.";
+//        return new BaseResponse<>(result);
+//    }
 }

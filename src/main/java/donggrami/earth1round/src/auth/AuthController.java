@@ -23,7 +23,6 @@ import static donggrami.earth1round.config.BaseResponseStatus.POST_EMPTY_REFRESH
 
 @RestController
 public class AuthController {
-
     private AuthService authService;
     private final JwtService jwtService;
 
@@ -112,5 +111,4 @@ public class AuthController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
-
 }

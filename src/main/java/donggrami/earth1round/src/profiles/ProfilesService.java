@@ -1,6 +1,7 @@
 package donggrami.earth1round.src.profiles;
 
 import donggrami.earth1round.config.BaseException;
+import donggrami.earth1round.src.auth.google.GoogleUserService;
 import donggrami.earth1round.src.domain.entity.Profile;
 import donggrami.earth1round.src.domain.entity.User;
 import donggrami.earth1round.src.domain.repository.ProfileRepository;
