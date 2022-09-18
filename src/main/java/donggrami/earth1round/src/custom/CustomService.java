@@ -1,7 +1,6 @@
 package donggrami.earth1round.src.custom;
 
 import donggrami.earth1round.config.BaseException;
-import donggrami.earth1round.src.auth.KakaoAuthService;
 import donggrami.earth1round.src.custom.model.GetCustomRes;
 import donggrami.earth1round.src.custom.model.PatchCustomReq;
 import donggrami.earth1round.src.domain.entity.Custom;
