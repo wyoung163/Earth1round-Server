@@ -1,4 +1,4 @@
-package donggrami.earth1round.src.auth.model;
+package donggrami.earth1round.src.auth.kakao.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

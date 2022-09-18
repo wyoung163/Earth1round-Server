@@ -1,9 +1,9 @@
-package donggrami.earth1round.src.auth;
+package donggrami.earth1round.src.auth.kakao;
 
 import donggrami.earth1round.config.BaseException;
 import static donggrami.earth1round.config.BaseResponseStatus.*;
 
-import donggrami.earth1round.src.auth.model.PostUserRes;
+import donggrami.earth1round.src.auth.kakao.model.PostUserRes;
 import donggrami.earth1round.src.domain.entity.Profile;
 import donggrami.earth1round.src.domain.entity.User;
 import donggrami.earth1round.src.domain.repository.ProfileRepository;
