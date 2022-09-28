@@ -3,7 +3,7 @@
 **우리는 지금까지 얼마만큼 걸었을까요?🧐** 라는 질문에서 우리의 프로젝트는 시작되었습니다. <br>
 우리의 한 걸음, 한 걸음은 **동그라미 친구**들을 만나 함께 **지구탐험**🌐을 할 수 있어요. <br>
 
-![걸어서지구한바퀴](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/e807fd1d-e8c9-42bb-b15c-c50b4e5bef01/%ED%94%84%EB%A0%88%EC%A0%A0%ED%85%8C%EC%9D%B4%EC%85%981.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220918%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220918T141528Z&X-Amz-Expires=86400&X-Amz-Signature=dc01183907b9fb4c214a9c672d9255a2846f76c56dec3d2810023f09d0ef1b47&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22%25ED%2594%2584%25EB%25A0%2588%25EC%25A0%25A0%25ED%2585%258C%25EC%259D%25B4%25EC%2585%25981.png%22&x-id=GetObject)
+<img src="./Docs/images/splash.png" width='100%' title="Earth1Round_Splash" />
 
 ## Environment
 - Language
@@ -49,4 +49,4 @@
 
 ## App Flow
 
-![flow](https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/7dabcadc-3afb-4896-b3cb-4d868cbe4472)
+<img src="./Docs/images/flow.png" width='100%' title="Earth1Round_Splash" />
