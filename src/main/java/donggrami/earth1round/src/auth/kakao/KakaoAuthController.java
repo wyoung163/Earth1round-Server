@@ -2,17 +2,13 @@ package donggrami.earth1round.src.auth.kakao;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import donggrami.earth1round.config.BaseException;
-import donggrami.earth1round.src.auth.kakao.model.DeleteUserRes;
-import donggrami.earth1round.src.auth.kakao.model.PostTokenReq;
-import donggrami.earth1round.src.auth.kakao.model.PostTokenRes;
 import donggrami.earth1round.src.auth.kakao.model.PostUserRes;
 import com.google.gson.JsonElement;
 import donggrami.earth1round.config.BaseResponse;
-import donggrami.earth1round.config.secret.Secret;
 import donggrami.earth1round.utils.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -23,13 +19,17 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 
-import static donggrami.earth1round.config.BaseResponseStatus.POST_EMPTY_REFRESH_TOKEN;
-
 @RestController
 @RequiredArgsConstructor
 public class KakaoAuthController {
-    private final String KAKAO_CLIENT_ID = Secret.KAKAO_CLIENT_ID;
-    private final String KAKAO_REDIRECT_URI = Secret.KAKAO_REDIRECT_URI;
+    @Value("${KAKAO_CLIENT_ID}")
+    private String KAKAO_CLIENT_ID_Init;
+
+    @Value("${KAKAO_REDIRECT_URI}")
+    private String KAKAO_REDIRECT_URI_Init;
+
+    private final String KAKAO_CLIENT_ID = KAKAO_CLIENT_ID_Init;
+    private final String KAKAO_REDIRECT_URI = KAKAO_REDIRECT_URI_Init;
 
     @Autowired
     private final KakaoAuthService service;

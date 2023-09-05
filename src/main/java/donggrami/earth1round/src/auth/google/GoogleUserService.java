@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import donggrami.earth1round.config.BaseException;
-import donggrami.earth1round.config.secret.Secret;
 import donggrami.earth1round.src.auth.google.model.GoogleOAuthTokenRes;
 import donggrami.earth1round.src.auth.google.model.GoogleUserRes;
 import donggrami.earth1round.src.domain.entity.Course;
@@ -21,6 +20,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.*;
@@ -45,11 +45,21 @@ import static donggrami.earth1round.config.BaseResponseStatus.*;
 @Service
 @Configuration
 public class GoogleUserService {
+
+    @Value("${GOOGLE_CLIENT_ID}")
+    private static String GOOGLE_CLIENT_ID;
+
+    @Value("${GOOGLE_CLIENT_SECRET}")
+    private static String GOOGLE_CLIENT_SECRET;
+
+    @Value("${GOOGLE_REDIRECT}")
+    private static String GOOGLE_REDIRECT;
+
     private Logger logger = LoggerFactory.getLogger(GoogleUserService.class);
 
-    private static final String CLIENT_ID = Secret.GOOGLE_CLIENT_ID;
-    private static final String CLIENT_SECRET = Secret.GOOGLE_CLIENT_SECRET;
-    private static final String REDIRECT_URI = Secret.GOOGLE_REDIRECT;
+    private static final String CLIENT_ID = GOOGLE_CLIENT_ID;
+    private static final String CLIENT_SECRET = GOOGLE_CLIENT_SECRET;
+    private static final String REDIRECT_URI = GOOGLE_REDIRECT;
     private static final String GRANT_TYPE = "authorization_code";
 
     private final UserRepository userRepository;

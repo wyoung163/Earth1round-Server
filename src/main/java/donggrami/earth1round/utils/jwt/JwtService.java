@@ -1,8 +1,8 @@
 package donggrami.earth1round.utils.jwt;
 
 import donggrami.earth1round.config.BaseException;
-import donggrami.earth1round.config.secret.Secret;
 import io.jsonwebtoken.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -17,6 +17,9 @@ import static donggrami.earth1round.config.BaseResponseStatus.*;
 public class JwtService {
 
     private final AuthorizationExtractor authorizationExtractor;
+
+    @Value("${JWT_SECRET_KEY}")
+    private String JWT_SECRET_KEY;
 
     public JwtService(AuthorizationExtractor authorizationExtractor) {
         this.authorizationExtractor = authorizationExtractor;
@@ -34,7 +37,7 @@ public class JwtService {
                 .claim("user_id", user_id)
                 .setIssuedAt(now)
                 .setExpiration(new Date(System.currentTimeMillis() + 3*(1000*60*60*24)))
-                .signWith(SignatureAlgorithm.HS256, Secret.JWT_SECRET_KEY)
+                .signWith(SignatureAlgorithm.HS256, JWT_SECRET_KEY)
                 .compact();
     }
 
@@ -50,7 +53,7 @@ public class JwtService {
                 .claim("user_id", user_id)
                 .setIssuedAt(now)
                 .setExpiration(new Date(System.currentTimeMillis() + 20*(1000*60*60*24)))
-                .signWith(SignatureAlgorithm.HS256, Secret.JWT_SECRET_KEY)
+                .signWith(SignatureAlgorithm.HS256, JWT_SECRET_KEY)
                 .compact();
     }
 
@@ -126,7 +129,7 @@ public class JwtService {
 
     private Claims getClaims(String jwt) {
         return Jwts.parser()
-                .setSigningKey(Secret.JWT_SECRET_KEY)
+                .setSigningKey(JWT_SECRET_KEY)
                 .parseClaimsJws(jwt)
                 .getBody();
     }

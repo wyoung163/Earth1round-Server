@@ -56,6 +56,8 @@ nbdist/
 application-local.yml
 application-dev.yml
 application-prod.yml
+application.yml
+application.properties
 
 ### secret
 src/main/java/donggrami/earth1round/config/secret
